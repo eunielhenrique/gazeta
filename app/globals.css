@@ -109,6 +109,19 @@ body {
 /* Deixa a nav encolher e rolar em vez de empurrar os botões pra fora */
 .gz-header-inner > nav { min-width: 0; }
 
+/* Menu: inline no desktop, hambúrguer + drawer no mobile */
+.gz-nav-spacer { display: none; }
+@media (min-width: 721px) {
+  .gz-drawer { display: none !important; }
+}
+@media (max-width: 720px) {
+  .gz-nav-inline { display: none !important; }
+  .gz-nav-spacer { display: block !important; }
+  .gz-hamburger { display: inline-flex !important; }
+  .gz-cta { display: none !important; }
+  .gz-search-input { width: 42vw !important; min-width: 130px; }
+}
+
 /* min-width:0 permite que itens de grid/flex encolham (senão estouram à direita) */
 .gz-hero-main, .gz-hero-sec, .gz-postcard-body { min-width: 0; }
 .gz-postcard-body > * { max-width: 100%; }
