@@ -109,7 +109,7 @@ export default function Header() {
               <IcoSearch />
             </button>
           )}
-          <Link href="/newsletter" style={{ padding: '12px 20px', borderRadius: 'var(--r-sm)', background: 'var(--ink)', color: '#fff', fontSize: 16, fontWeight: 500, letterSpacing: '-0.16px', display: 'flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
+          <Link className="gz-cta" href="/newsletter" style={{ padding: '12px 20px', borderRadius: 'var(--r-sm)', background: 'var(--ink)', color: '#fff', fontSize: 16, fontWeight: 500, letterSpacing: '-0.16px', display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', flexShrink: 0 }}>
             Assine
           </Link>
         </div>

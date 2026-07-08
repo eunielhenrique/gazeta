@@ -97,42 +97,48 @@ body {
 }
 
 /* Tipografia fluida — aplicada sempre (max = valor de desktop) */
-.gz-d-hero { font-size: clamp(28px, 6.4vw, 44.8px) !important; line-height: 1.06 !important; }
-.gz-d-section { font-size: clamp(27px, 6vw, 44.8px) !important; line-height: 1.06 !important; }
-.gz-d-cat { font-size: clamp(33px, 8vw, 56px) !important; line-height: 1.05 !important; }
-.gz-d-post { font-size: clamp(28px, 6.4vw, 44.8px) !important; line-height: 1.08 !important; }
-.gz-d-sec { font-size: clamp(19px, 4.6vw, 24px) !important; }
-.gz-d-md { font-size: clamp(22px, 5vw, 32px) !important; }
+.gz-d-hero { font-size: clamp(27px, 6.4vw, 44.8px) !important; line-height: 1.06 !important; letter-spacing: -0.4px !important; overflow-wrap: anywhere; }
+.gz-d-section { font-size: clamp(26px, 6vw, 44.8px) !important; line-height: 1.06 !important; letter-spacing: -0.4px !important; overflow-wrap: anywhere; }
+.gz-d-cat { font-size: clamp(32px, 8vw, 56px) !important; line-height: 1.05 !important; letter-spacing: -0.4px !important; overflow-wrap: anywhere; }
+.gz-d-post { font-size: clamp(27px, 6.4vw, 44.8px) !important; line-height: 1.08 !important; letter-spacing: -0.4px !important; overflow-wrap: anywhere; }
+.gz-d-sec { font-size: clamp(19px, 4.6vw, 24px) !important; overflow-wrap: anywhere; }
+.gz-d-md { font-size: clamp(22px, 5vw, 32px) !important; overflow-wrap: anywhere; }
 
 /* Safe-area (notch) para o header quando instalado como PWA */
 .gz-header { padding-top: env(safe-area-inset-top); }
+/* Deixa a nav encolher e rolar em vez de empurrar os botões pra fora */
+.gz-header-inner > nav { min-width: 0; }
+
+/* min-width:0 permite que itens de grid/flex encolham (senão estouram à direita) */
+.gz-hero-main, .gz-hero-sec, .gz-postcard-body { min-width: 0; }
+.gz-postcard-body > * { max-width: 100%; }
 
 @media (max-width: 900px) {
-  .gz-hero-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
-  .gz-feed-grid { grid-template-columns: 1fr !important; }
-  .gz-newsletter-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
-  .gz-editorias-grid { grid-template-columns: repeat(2, 1fr) !important; }
-  .gz-related-grid { grid-template-columns: repeat(2, 1fr) !important; }
-  .gz-two-col { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .gz-hero-grid { grid-template-columns: minmax(0, 1fr) !important; gap: 16px !important; }
+  .gz-feed-grid { grid-template-columns: minmax(0, 1fr) !important; }
+  .gz-newsletter-grid { grid-template-columns: minmax(0, 1fr) !important; gap: 28px !important; }
+  .gz-editorias-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .gz-related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .gz-two-col { grid-template-columns: minmax(0, 1fr) !important; gap: 12px !important; }
   .gz-hero-main { min-height: 460px !important; }
 }
 
 @media (max-width: 720px) {
   .gz-container { padding-left: 18px !important; padding-right: 18px !important; }
-  .gz-section-pad { padding-left: 18px !important; padding-right: 18px !important; }
-  .gz-postcard { grid-template-columns: 1fr !important; gap: 14px !important; }
+  .gz-postcard { grid-template-columns: minmax(0, 1fr) !important; gap: 14px !important; }
   .gz-postcard-img { min-height: 0 !important; aspect-ratio: 16 / 9 !important; }
   .gz-postcard-body { padding: 4px 4px 6px !important; }
-  .gz-hero-main { min-height: 380px !important; padding: 24px !important; }
-  .gz-hero-sec { min-height: 220px !important; padding: 20px !important; }
-  .gz-header-inner { padding: 12px 16px !important; gap: 12px !important; }
+  .gz-hero-main { min-height: 360px !important; padding: 22px !important; }
+  .gz-hero-sec { min-height: 210px !important; padding: 20px !important; }
+  .gz-header-inner { padding: 12px 14px !important; gap: 10px !important; }
   .gz-header-divider { display: none !important; }
-  .gz-related-grid { grid-template-columns: 1fr !important; }
+  .gz-header-inner img { height: 30px !important; }
+  .gz-related-grid { grid-template-columns: minmax(0, 1fr) !important; }
 }
 
 @media (max-width: 520px) {
-  .gz-editorias-grid { grid-template-columns: 1fr !important; }
-  .gz-cta-compact { padding: 10px 14px !important; }
+  .gz-editorias-grid { grid-template-columns: minmax(0, 1fr) !important; }
+  .gz-cta { padding: 10px 14px !important; font-size: 14px !important; }
 }
 
 @media (max-width: 760px) {
