@@ -1,22 +1,28 @@
-# DigitalOcean App Platform — spec do app inteiro (web + Managed Postgres).
-# Ajuste `repo` e `branch` para o seu repositório antes de aplicar:
-#   doctl apps create --spec .do/app.yaml
-# ou cole em: Apps → Create → import from App Spec.
+# DigitalOcean App Platform — spec do app (web + Managed Postgres).
+# Esta é a configuração REAL usada no deploy (git source do repo público +
+# cluster Postgres gerenciado "gazeta-db" via doadmin).
+#
+# Deploy / atualização:
+#   doctl apps update <APP_ID> --spec .do/app.yaml
+#   (ou, na criação inicial: doctl apps create --spec .do/app.yaml)
+#
+# IMPORTANTE: troque os valores SECRET (INBOUND_WEBHOOK_SECRET, ADMIN_TOKEN)
+# antes de aplicar — não versione segredos reais neste arquivo público.
 name: gazeta-de-alphaville
 region: nyc
 
 services:
   - name: web
     dockerfile_path: Dockerfile
-    github:
-      repo: SEU-USUARIO/gazeta-de-alphaville
+    git:
+      repo_clone_url: https://github.com/eunielhenrique/gazeta.git
       branch: main
-      deploy_on_push: true
     http_port: 8080
     instance_size_slug: basic-xxs
     instance_count: 1
     health_check:
       http_path: /
+      initial_delay_seconds: 40
     envs:
       - key: DATABASE_URL
         scope: RUN_AND_BUILD_TIME
@@ -40,4 +46,7 @@ databases:
   - name: db
     engine: PG
     version: "16"
-    production: false # troque para true (cluster dedicado) em produção real
+    cluster_name: gazeta-db # cluster Managed Postgres existente
+    production: true
+    db_name: defaultdb
+    db_user: doadmin
