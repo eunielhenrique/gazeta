@@ -1,0 +1,110 @@
+// Gazeta de Alphaville — modelo de dados do pipeline SECOM.
+// Postgres em produção (Vercel + Supabase). Migrar de/para outro Postgres
+// é só trocar DATABASE_URL. Editorias e regiões NÃO são tabelas: vêm da
+// taxonomia (lib/taxonomia.json), a fonte da verdade — posts referenciam
+// seus slugs.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum PostStatus {
+  draft
+  review
+  published
+  archived
+}
+
+enum EmailStatus {
+  received
+  classified
+  published
+  review
+  discarded
+  error
+}
+
+enum ClassificationMethod {
+  rules
+  rules_llm
+}
+
+/// Log de auditoria imutável — cada e-mail recebido da SECOM.
+model IngestEmail {
+  id          String       @id @default(cuid())
+  messageId   String       @unique @map("message_id") // idempotência (header Message-ID)
+  fromAddr    String       @map("from_addr")
+  subject     String
+  bodyText    String       @map("body_text")
+  bodyHtml    String?      @map("body_html")
+  attachments Json         @default("[]")
+  rawHeaders  Json         @default("{}") @map("raw_headers")
+  status      EmailStatus  @default(received)
+  error       String?
+  receivedAt  DateTime     @default(now()) @map("received_at")
+
+  classification Classification?
+  post           Post?
+
+  @@index([status, receivedAt])
+  @@map("ingest_email")
+}
+
+/// Resultado do classificador (explicável).
+model Classification {
+  id              String               @id @default(cuid())
+  emailId         String               @unique @map("email_id")
+  email           IngestEmail          @relation(fields: [emailId], references: [id], onDelete: Cascade)
+  editoriaSlug    String               @map("editoria_slug")
+  regiaoSlug      String               @map("regiao_slug")
+  score           Float
+  scores          Json // score por editoria
+  matchedTerms    Json                 @map("matched_terms")
+  taxonomiaVersao String               @map("taxonomia_versao")
+  method          ClassificationMethod @default(rules)
+  createdAt       DateTime             @default(now()) @map("created_at")
+
+  @@map("classification")
+}
+
+/// Conteúdo publicável.
+model Post {
+  id           String     @id @default(cuid())
+  slug         String     @unique
+  title        String
+  excerpt      String
+  body         String
+  editoriaSlug String     @map("editoria_slug")
+  regiaoSlug   String     @map("regiao_slug")
+  coverImageUrl String?   @map("cover_image_url")
+  author       String     @default("Redação Gazeta")
+  source       String     @default("SECOM · Prefeitura de Santana de Parnaíba")
+  readTimeMin  Int        @map("read_time_min")
+  status       PostStatus @default(draft)
+  featured     Boolean    @default(false) // marca o destaque da home (hero)
+  confidence   Float?     // score da classificação, quando veio do pipeline
+  emailId      String?    @unique @map("email_id")
+  email        IngestEmail? @relation(fields: [emailId], references: [id], onDelete: SetNull)
+  publishedAt  DateTime?  @map("published_at")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+
+  @@index([status, publishedAt])
+  @@index([editoriaSlug, status])
+  @@index([regiaoSlug, status])
+  @@map("post")
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("newsletter_subscriber")
+}

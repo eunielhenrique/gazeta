@@ -1,0 +1,113 @@
+{
+  "$schema": "https://gazetadealphaville.com.br/schemas/taxonomia.v1.json",
+  "versao": "1.0.0",
+  "atualizado_em": "2026-06-21",
+  "descricao": "Taxonomia de editorias da Gazeta de Alphaville. Fonte da verdade para o classificador de e-mails da SECOM. Cada editoria tem cor fixa (UI), escopo e keywords/regex usados na classificação. As cores referenciam a paleta Webflow do design (5+ acentos).",
+  "regioes": [
+    { "slug": "alphaville", "nome": "Alphaville" },
+    { "slug": "barueri", "nome": "Barueri" },
+    { "slug": "santana-de-parnaiba", "nome": "Santana de Parnaíba" },
+    { "slug": "regiao", "nome": "Região" }
+  ],
+  "regiao_padrao": "santana-de-parnaiba",
+  "editorias": [
+    {
+      "slug": "cidade",
+      "nome": "Cidade",
+      "cor": "#3b89ff",
+      "cor_token": "--blue",
+      "texto_sobre_cor": "#ffffff",
+      "escopo": "Prefeitura, Câmara, políticas públicas e serviços ao cidadão",
+      "keywords": ["prefeitura", "câmara", "vereador", "decreto", "licitação", "secretaria", "secretário", "servidor", "iptu", "orçamento", "sessão", "audiência pública", "portal do cidadão", "regularização"],
+      "regex": ["\\bcâmara\\s+municipal\\b", "\\bprefeit[oa]\\b", "\\bdecreto\\s+n[ºo]\\b"],
+      "peso": 1.0
+    },
+    {
+      "slug": "seguranca",
+      "nome": "Segurança",
+      "cor": "#ee1d36",
+      "cor_token": "--red",
+      "texto_sobre_cor": "#ffffff",
+      "escopo": "GCM, Polícia, ocorrências, defesa civil e prevenção",
+      "keywords": ["gcm", "guarda civil", "polícia", "policial", "furto", "roubo", "apreensão", "defesa civil", "boletim de ocorrência", "operação", "patrulhamento", "videomonitoramento", "detecta", "segurança pública"],
+      "regex": ["\\bguarda\\s+civil\\b", "\\bpol[íi]cia\\s+(militar|civil)\\b"],
+      "peso": 1.1
+    },
+    {
+      "slug": "saude",
+      "nome": "Saúde",
+      "cor": "#00d722",
+      "cor_token": "--green",
+      "texto_sobre_cor": "#080808",
+      "escopo": "UBS, hospitais, campanhas, vacinação e vigilância",
+      "keywords": ["ubs", "posto de saúde", "vacina", "vacinação", "hospital", "dengue", "campanha", "atendimento", "sus", "mutirão", "consulta", "cirurgia", "vigilância sanitária", "saúde"],
+      "regex": ["\\bcampanha\\s+de\\s+vacina", "\\bunidade\\s+b[áa]sica\\b"],
+      "peso": 1.0
+    },
+    {
+      "slug": "educacao",
+      "nome": "Educação",
+      "cor": "#7a3dff",
+      "cor_token": "--purple",
+      "texto_sobre_cor": "#ffffff",
+      "escopo": "Escolas, creches, matrículas, EJA e capacitação",
+      "keywords": ["escola", "creche", "matrícula", "eja", "professor", "vestibular", "merenda", "aluno", "ensino", "educação", "vaga escolar", "rede municipal", "robótica"],
+      "regex": ["\\brede\\s+municipal\\s+de\\s+ensino\\b", "\\bvagas?\\s+em\\s+creche"],
+      "peso": 1.0
+    },
+    {
+      "slug": "mobilidade",
+      "nome": "Mobilidade",
+      "cor": "#ffae13",
+      "cor_token": "--yellow",
+      "texto_sobre_cor": "#080808",
+      "escopo": "Obras, trânsito, transporte público e infraestrutura viária",
+      "keywords": ["obra", "obras", "trânsito", "asfalto", "ônibus", "recape", "recapeamento", "interdição", "viário", "drenagem", "terminal", "linha", "mobilidade", "pavimentação", "sinalização"],
+      "regex": ["\\brecapeamento\\b", "\\bnova\\s+linha\\s+de\\s+[ôo]nibus\\b"],
+      "peso": 1.0
+    },
+    {
+      "slug": "economia",
+      "nome": "Economia",
+      "cor": "#006acc",
+      "cor_token": "--blue-deep",
+      "texto_sobre_cor": "#ffffff",
+      "escopo": "Emprego, comércio, empreendedorismo e desenvolvimento",
+      "keywords": ["emprego", "vaga", "vagas", "comércio", "pat", "mei", "feira", "investimento", "empreendedor", "microcrédito", "renda", "capacitação profissional", "desenvolvimento econômico"],
+      "regex": ["\\bposto\\s+de\\s+atendimento\\s+ao\\s+trabalhador\\b", "\\b\\d+\\s+vagas?\\s+de\\s+emprego\\b"],
+      "peso": 1.0
+    },
+    {
+      "slug": "cultura",
+      "nome": "Cultura",
+      "cor": "#ed52cb",
+      "cor_token": "--pink",
+      "texto_sobre_cor": "#ffffff",
+      "escopo": "Eventos, shows, patrimônio, lazer e turismo",
+      "keywords": ["evento", "show", "teatro", "festival", "patrimônio", "exposição", "feira cultural", "música", "cinema", "biblioteca", "turismo", "lazer", "cultura", "oficina"],
+      "regex": ["\\bfestival\\s+de\\b", "\\bshows?\\s+gratuit"],
+      "peso": 0.9
+    },
+    {
+      "slug": "esporte",
+      "nome": "Esporte",
+      "cor": "#ff6b00",
+      "cor_token": "--orange",
+      "texto_sobre_cor": "#ffffff",
+      "escopo": "Competições, equipamentos públicos e atletas da região",
+      "keywords": ["jogo", "campeonato", "ginásio", "atleta", "corrida", "medalha", "torneio", "esporte", "quadra", "seleção", "modalidade", "vôlei", "futebol", "etapa estadual"],
+      "regex": ["\\bgin[áa]sio\\s+municipal\\b", "\\betapa\\s+estadual\\b"],
+      "peso": 0.9
+    }
+  ],
+  "fallback": {
+    "editoria": "cidade",
+    "descricao": "Editoria usada quando o score de todas as editorias fica abaixo do limiar de confiança. Item vai para revisão manual (status=revisao)."
+  },
+  "limiares": {
+    "auto_publicar": 0.72,
+    "revisao_manual": 0.45,
+    "descartar_abaixo_de": 0.15,
+    "observacao": "score normalizado 0..1. >= auto_publicar publica direto; entre revisao_manual e auto_publicar entra na fila de revisão; < revisao_manual marca como baixa confiança; < descartar_abaixo_de sugere descarte (provável e-mail fora de escopo)."
+  }
+}

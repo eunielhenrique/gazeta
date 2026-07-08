@@ -1,0 +1,43 @@
+# DigitalOcean App Platform — spec do app inteiro (web + Managed Postgres).
+# Ajuste `repo` e `branch` para o seu repositório antes de aplicar:
+#   doctl apps create --spec .do/app.yaml
+# ou cole em: Apps → Create → import from App Spec.
+name: gazeta-de-alphaville
+region: nyc
+
+services:
+  - name: web
+    dockerfile_path: Dockerfile
+    github:
+      repo: SEU-USUARIO/gazeta-de-alphaville
+      branch: main
+      deploy_on_push: true
+    http_port: 8080
+    instance_size_slug: basic-xxs
+    instance_count: 1
+    health_check:
+      http_path: /
+    envs:
+      - key: DATABASE_URL
+        scope: RUN_AND_BUILD_TIME
+        value: ${db.DATABASE_URL}
+      - key: DIRECT_URL
+        scope: RUN_AND_BUILD_TIME
+        value: ${db.DATABASE_URL}
+      - key: SECOM_ALLOWLIST
+        scope: RUN_TIME
+        value: secom@santanadeparnaiba.sp.gov.br
+      - key: INBOUND_WEBHOOK_SECRET
+        scope: RUN_TIME
+        type: SECRET
+        value: TROQUE_POR_UM_SEGREDO
+      - key: ADMIN_TOKEN
+        scope: RUN_TIME
+        type: SECRET
+        value: TROQUE_POR_UM_TOKEN
+
+databases:
+  - name: db
+    engine: PG
+    version: "16"
+    production: false # troque para true (cluster dedicado) em produção real
