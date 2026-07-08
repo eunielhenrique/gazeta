@@ -81,3 +81,64 @@ button {
 .no-scroll-bar {
   scrollbar-width: none;
 }
+
+/* ─── Responsivo / mobile ──────────────────────────────────
+   Os componentes usam estilos inline (do protótipo). Aqui a gente
+   sobrepõe só o que precisa por breakpoint com !important, e aplica
+   tipografia fluida com clamp() (no desktop o clamp bate no valor
+   original, então nada muda em telas grandes). */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+body {
+  overflow-x: clip; /* mata scroll horizontal acidental sem quebrar sticky */
+}
+
+/* Tipografia fluida — aplicada sempre (max = valor de desktop) */
+.gz-d-hero { font-size: clamp(28px, 6.4vw, 44.8px) !important; line-height: 1.06 !important; }
+.gz-d-section { font-size: clamp(27px, 6vw, 44.8px) !important; line-height: 1.06 !important; }
+.gz-d-cat { font-size: clamp(33px, 8vw, 56px) !important; line-height: 1.05 !important; }
+.gz-d-post { font-size: clamp(28px, 6.4vw, 44.8px) !important; line-height: 1.08 !important; }
+.gz-d-sec { font-size: clamp(19px, 4.6vw, 24px) !important; }
+.gz-d-md { font-size: clamp(22px, 5vw, 32px) !important; }
+
+/* Safe-area (notch) para o header quando instalado como PWA */
+.gz-header { padding-top: env(safe-area-inset-top); }
+
+@media (max-width: 900px) {
+  .gz-hero-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+  .gz-feed-grid { grid-template-columns: 1fr !important; }
+  .gz-newsletter-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
+  .gz-editorias-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .gz-related-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .gz-two-col { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .gz-hero-main { min-height: 460px !important; }
+}
+
+@media (max-width: 720px) {
+  .gz-container { padding-left: 18px !important; padding-right: 18px !important; }
+  .gz-section-pad { padding-left: 18px !important; padding-right: 18px !important; }
+  .gz-postcard { grid-template-columns: 1fr !important; gap: 14px !important; }
+  .gz-postcard-img { min-height: 0 !important; aspect-ratio: 16 / 9 !important; }
+  .gz-postcard-body { padding: 4px 4px 6px !important; }
+  .gz-hero-main { min-height: 380px !important; padding: 24px !important; }
+  .gz-hero-sec { min-height: 220px !important; padding: 20px !important; }
+  .gz-header-inner { padding: 12px 16px !important; gap: 12px !important; }
+  .gz-header-divider { display: none !important; }
+  .gz-related-grid { grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 520px) {
+  .gz-editorias-grid { grid-template-columns: 1fr !important; }
+  .gz-cta-compact { padding: 10px 14px !important; }
+}
+
+@media (max-width: 760px) {
+  .gz-footer-grid { grid-template-columns: 1fr 1fr !important; gap: 28px 24px !important; }
+}
+@media (max-width: 460px) {
+  .gz-footer-grid { grid-template-columns: 1fr !important; }
+  .gz-footer-bottom { flex-direction: column !important; align-items: flex-start !important; gap: 14px !important; }
+}

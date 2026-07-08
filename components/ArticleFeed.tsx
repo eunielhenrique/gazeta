@@ -21,9 +21,9 @@ export default function ArticleFeed({
 }) {
   const empty = articles.length === 0;
   return (
-    <section style={{ maxWidth: 1240, margin: '0 auto', padding: '40px 32px 72px' }}>
+    <section className="gz-container" style={{ maxWidth: 1240, margin: '0 auto', padding: '40px 32px 72px' }}>
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 28 }}>
-        <h2 style={{ fontSize: 44.8, fontWeight: 600, letterSpacing: '-0.8px', lineHeight: '46.6px', color: 'var(--ink)' }}>{title}</h2>
+        <h2 className="gz-d-section" style={{ fontSize: 44.8, fontWeight: 600, letterSpacing: '-0.8px', lineHeight: '46.6px', color: 'var(--ink)' }}>{title}</h2>
       </div>
 
       {empty ? (
@@ -32,7 +32,7 @@ export default function ArticleFeed({
           <div style={{ fontSize: 16, color: 'var(--body-mid)' }}>{emptyHint ?? 'Tente outros termos ou explore as editorias.'}</div>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: showSidebar ? '1fr 320px' : '1fr', gap: 32, alignItems: 'start' }}>
+        <div className={showSidebar ? 'gz-feed-grid' : undefined} style={{ display: 'grid', gridTemplateColumns: showSidebar ? '1fr 320px' : '1fr', gap: 32, alignItems: 'start' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             {articles.map((a) => (
               <PostCard key={a.id} article={a} />

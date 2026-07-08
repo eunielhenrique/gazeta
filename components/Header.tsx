@@ -41,6 +41,7 @@ export default function Header() {
 
   return (
     <header
+      className="gz-header"
       style={{
         position: 'sticky',
         top: 0,
@@ -49,11 +50,11 @@ export default function Header() {
         borderBottom: '1px solid var(--hairline)',
       }}
     >
-      <div style={{ maxWidth: 1240, margin: '0 auto', padding: '14px 32px', display: 'flex', alignItems: 'center', gap: 20 }}>
+      <div className="gz-header-inner" style={{ maxWidth: 1240, margin: '0 auto', padding: '14px 32px', display: 'flex', alignItems: 'center', gap: 20 }}>
         <Link href="/" style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
           <Image src="/assets/logo-ink.png" alt="Gazeta de Alphaville" width={100} height={38} style={{ height: 38, width: 'auto' }} priority />
         </Link>
-        <div style={{ width: 1, height: 20, background: 'var(--hairline)', flexShrink: 0 }} />
+        <div className="gz-header-divider" style={{ width: 1, height: 20, background: 'var(--hairline)', flexShrink: 0 }} />
 
         <nav className="no-scroll-bar" style={{ display: 'flex', gap: 2, flex: 1, marginLeft: 4, overflowX: 'auto' }}>
           {NAV.map((item) => {

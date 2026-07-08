@@ -12,6 +12,7 @@ export default function PostCard({ article }: { article: PostDTO }) {
       href={`/noticia/${article.slug}`}
       onMouseEnter={() => setH(true)}
       onMouseLeave={() => setH(false)}
+      className="gz-postcard"
       style={{
         position: 'relative',
         display: 'grid',
@@ -25,7 +26,7 @@ export default function PostCard({ article }: { article: PostDTO }) {
         transition: 'box-shadow 220ms',
       }}
     >
-      <div style={{ overflow: 'hidden', background: '#eee', borderRadius: 'var(--r-md)', minHeight: 220 }}>
+      <div className="gz-postcard-img" style={{ overflow: 'hidden', background: '#eee', borderRadius: 'var(--r-md)', minHeight: 220 }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={article.cover_image_url ?? ''}
@@ -33,7 +34,7 @@ export default function PostCard({ article }: { article: PostDTO }) {
           style={{ width: '100%', height: '100%', objectFit: 'cover', transform: h ? 'scale(1.05)' : 'scale(1)', transition: 'transform 400ms ease' }}
         />
       </div>
-      <div style={{ position: 'relative', padding: '12px 20px 12px 32px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 16 }}>
+      <div className="gz-postcard-body" style={{ position: 'relative', padding: '12px 20px 12px 32px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 16 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
           <CatBadge editoria={article.editoria} />
           <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--body-mid)' }}>{article.regiao.nome}</span>
@@ -41,7 +42,7 @@ export default function PostCard({ article }: { article: PostDTO }) {
             <ReadTime min={article.read_time_min} />
           </span>
         </div>
-        <h3 style={{ fontSize: 24, fontWeight: 600, lineHeight: '31.2px', letterSpacing: '-0.4px', color: 'var(--ink)', textWrap: 'pretty', maxWidth: '92%' }}>{article.title}</h3>
+        <h3 className="gz-d-sec" style={{ fontSize: 24, fontWeight: 600, lineHeight: '31.2px', letterSpacing: '-0.4px', color: 'var(--ink)', textWrap: 'pretty', maxWidth: '92%' }}>{article.title}</h3>
         <p style={{ fontSize: 16, fontWeight: 400, lineHeight: '25.6px', letterSpacing: '-0.16px', color: 'var(--body)', maxWidth: '96%' }}>
           {article.excerpt.length > 128 ? article.excerpt.slice(0, 128) + '…' : article.excerpt}
         </p>

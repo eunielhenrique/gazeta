@@ -9,11 +9,11 @@ export const metadata: Metadata = {
 
 export default function NewsletterPage() {
   return (
-    <section style={{ maxWidth: 1240, margin: '0 auto', padding: '64px 32px 80px' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: 56, alignItems: 'start' }}>
+    <section className="gz-container" style={{ maxWidth: 1240, margin: '0 auto', padding: '64px 32px 80px' }}>
+      <div className="gz-newsletter-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: 56, alignItems: 'start' }}>
         <div>
           <span style={{ display: 'block', fontSize: 15, fontWeight: 500, letterSpacing: '1.5px', textTransform: 'uppercase', color: 'var(--body-mid)', marginBottom: 16 }}>Newsletter</span>
-          <h1 style={{ fontSize: 56, fontWeight: 600, lineHeight: '58.24px', letterSpacing: '-0.8px', color: 'var(--ink)', maxWidth: 640 }}>
+          <h1 className="gz-d-cat" style={{ fontSize: 56, fontWeight: 600, lineHeight: '58.24px', letterSpacing: '-0.8px', color: 'var(--ink)', maxWidth: 640 }}>
             A região inteira, resumida na sua caixa de entrada
           </h1>
           <p style={{ fontSize: 20, fontWeight: 400, lineHeight: '30px', color: 'var(--body)', marginTop: 20, maxWidth: 560 }}>

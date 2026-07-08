@@ -12,6 +12,7 @@ function SecondaryCard({ a }: { a: PostDTO }) {
       href={`/noticia/${a.slug}`}
       onMouseEnter={() => setH(true)}
       onMouseLeave={() => setH(false)}
+      className="gz-hero-sec"
       style={{
         position: 'relative',
         flex: 1,
@@ -36,7 +37,7 @@ function SecondaryCard({ a }: { a: PostDTO }) {
           <CatBadge editoria={a.editoria} />
           <span style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,.8)' }}>{a.regiao.nome}</span>
         </div>
-        <h3 style={{ fontSize: 24, fontWeight: 600, lineHeight: '31.2px', letterSpacing: '-0.4px', color: '#fff', textWrap: 'balance' }}>{a.title}</h3>
+        <h3 className="gz-d-sec" style={{ fontSize: 24, fontWeight: 600, lineHeight: '31.2px', letterSpacing: '-0.4px', color: '#fff', textWrap: 'balance' }}>{a.title}</h3>
         <div style={{ fontSize: 14, color: 'rgba(255,255,255,.64)' }}>
           {a.author.split(' ')[0]} · {a.date} · {a.read_time_min} min
         </div>
@@ -49,12 +50,13 @@ export default function Hero({ hero, secondary }: { hero: PostDTO; secondary: Po
   const [h, setH] = useState(false);
   return (
     <section style={{ background: 'var(--canvas)' }}>
-      <div style={{ maxWidth: 1240, margin: '0 auto', padding: '40px 32px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1.45fr 1fr', gap: 20, alignItems: 'stretch' }}>
+      <div className="gz-container" style={{ maxWidth: 1240, margin: '0 auto', padding: '40px 32px' }}>
+        <div className="gz-hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.45fr 1fr', gap: 20, alignItems: 'stretch' }}>
           <Link
             href={`/noticia/${hero.slug}`}
             onMouseEnter={() => setH(true)}
             onMouseLeave={() => setH(false)}
+            className="gz-hero-main"
             style={{
               position: 'relative',
               display: 'flex',
@@ -78,7 +80,7 @@ export default function Hero({ hero, secondary }: { hero: PostDTO; secondary: Po
                 <CatBadge editoria={hero.editoria} />
                 <span style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,.82)' }}>{hero.regiao.nome}</span>
               </div>
-              <h2 style={{ fontSize: 44.8, fontWeight: 600, lineHeight: '46.6px', letterSpacing: '-0.8px', color: '#fff', textWrap: 'balance', maxWidth: 600 }}>{hero.title}</h2>
+              <h2 className="gz-d-hero" style={{ fontSize: 44.8, fontWeight: 600, lineHeight: '46.6px', letterSpacing: '-0.8px', color: '#fff', textWrap: 'balance', maxWidth: 600 }}>{hero.title}</h2>
               <p style={{ fontSize: 16, fontWeight: 400, lineHeight: '25.6px', letterSpacing: '-0.16px', color: 'rgba(255,255,255,.8)', maxWidth: 540 }}>{hero.excerpt}</p>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 2 }}>
                 <Avatar name={hero.author} size={40} />

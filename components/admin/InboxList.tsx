@@ -33,7 +33,7 @@ export default function InboxList({ items, counts, filter, editorias, limiares }
   const edBy = new Map(editorias.map((e) => [e.slug, e]));
 
   return (
-    <div style={{ maxWidth: 1240, margin: '0 auto', padding: '32px 32px 80px' }}>
+    <div className="gz-container" style={{ maxWidth: 1240, margin: '0 auto', padding: '32px 32px 80px' }}>
       {/* Intro / como funciona */}
       <div style={{ background: 'var(--canvas)', border: '1px solid var(--hairline)', borderRadius: 'var(--r-md)', padding: 28, marginBottom: 24 }}>
         <span style={{ display: 'block', fontSize: 12, fontWeight: 500, letterSpacing: '1.5px', textTransform: 'uppercase', color: 'var(--body-mid)', marginBottom: 12 }}>Automação SECOM</span>
@@ -142,7 +142,7 @@ function InboxRow({
       <p style={{ fontSize: 15, color: 'var(--body-mid)', lineHeight: '23px', marginTop: 8, maxWidth: 820 }}>{item.excerpt}</p>
 
       {/* Classificação */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginTop: 20, padding: '18px 0', borderTop: '1px solid var(--hairline)' }}>
+      <div className="gz-two-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginTop: 20, padding: '18px 0', borderTop: '1px solid var(--hairline)' }}>
         <div>
           <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.6px', textTransform: 'uppercase', color: 'var(--mute)', marginBottom: 10 }}>Editoria sugerida</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>

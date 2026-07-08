@@ -8,9 +8,9 @@ export const metadata: Metadata = {
 
 export default function SobrePage() {
   return (
-    <section style={{ maxWidth: 820, margin: '0 auto', padding: '64px 32px 80px' }}>
+    <section className="gz-container" style={{ maxWidth: 820, margin: '0 auto', padding: '64px 32px 80px' }}>
       <span style={{ display: 'block', fontSize: 15, fontWeight: 500, letterSpacing: '1.5px', textTransform: 'uppercase', color: 'var(--body-mid)', marginBottom: 16 }}>Expediente</span>
-      <h1 style={{ fontSize: 44.8, fontWeight: 600, lineHeight: '46.6px', letterSpacing: '-0.8px', color: 'var(--ink)' }}>Sobre a Gazeta de Alphaville</h1>
+      <h1 className="gz-d-section" style={{ fontSize: 44.8, fontWeight: 600, lineHeight: '46.6px', letterSpacing: '-0.8px', color: 'var(--ink)' }}>Sobre a Gazeta de Alphaville</h1>
 
       <div style={{ marginTop: 28, display: 'flex', flexDirection: 'column', gap: 20 }}>
         {[
@@ -25,7 +25,7 @@ export default function SobrePage() {
       </div>
 
       <h2 style={{ fontSize: 24, fontWeight: 600, letterSpacing: '-0.4px', color: 'var(--ink)', marginTop: 40, marginBottom: 16 }}>Editorias monitoradas</h2>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
+      <div className="gz-two-col" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
         {EDITORIAS.map((ed) => (
           <div key={ed.slug} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', padding: 16, border: '1px solid var(--hairline)', borderRadius: 'var(--r-md)' }}>
             <span style={{ width: 12, height: 12, borderRadius: 3, background: ed.cor, marginTop: 4, flexShrink: 0 }} />

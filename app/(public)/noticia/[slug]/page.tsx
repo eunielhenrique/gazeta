@@ -35,12 +35,12 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   return (
     <article>
       <section style={{ background: 'var(--canvas)' }}>
-        <div style={{ maxWidth: 820, margin: '0 auto', padding: '48px 32px 24px' }}>
+        <div className="gz-container" style={{ maxWidth: 820, margin: '0 auto', padding: '48px 32px 24px' }}>
           <Link href={`/editoria/${post.editoria.slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
             <span style={{ display: 'inline-flex', padding: '5px 9px', fontSize: 12.8, fontWeight: 600, borderRadius: 'var(--r-sm)', color: post.editoria.texto_sobre_cor, background: post.editoria.cor }}>{post.editoria.nome}</span>
             <span style={{ fontSize: 14, fontWeight: 500, color: 'var(--body-mid)' }}>{post.regiao.nome}</span>
           </Link>
-          <h1 style={{ fontSize: 44.8, fontWeight: 600, lineHeight: '46.6px', letterSpacing: '-0.8px', color: 'var(--ink)', textWrap: 'balance' }}>{post.title}</h1>
+          <h1 className="gz-d-post" style={{ fontSize: 44.8, fontWeight: 600, lineHeight: '46.6px', letterSpacing: '-0.8px', color: 'var(--ink)', textWrap: 'balance' }}>{post.title}</h1>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 24, paddingBottom: 24, borderBottom: '1px solid var(--hairline)' }}>
             <Avatar name={post.author} size={40} />
             <div>
@@ -51,7 +51,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
             </div>
           </div>
         </div>
-        <div style={{ maxWidth: 1040, margin: '0 auto', padding: '0 32px' }}>
+        <div className="gz-container" style={{ maxWidth: 1040, margin: '0 auto', padding: '0 32px' }}>
           <div style={{ aspectRatio: '16/9', borderRadius: 'var(--r-md)', overflow: 'hidden', background: '#eee' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={post.cover_image_url ?? ''} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -59,7 +59,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         </div>
       </section>
 
-      <section style={{ maxWidth: 820, margin: '0 auto', padding: '40px 32px 24px' }}>
+      <section className="gz-container" style={{ maxWidth: 820, margin: '0 auto', padding: '40px 32px 24px' }}>
         {paragraphs.map((p, i) => (
           <p key={i} style={{ fontSize: 18, fontWeight: 400, lineHeight: '30px', letterSpacing: '-0.16px', color: 'var(--body)', marginBottom: 24 }}>
             {p}
@@ -72,10 +72,10 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       </section>
 
       {related.length > 0 && (
-        <section style={{ background: 'var(--canvas)', borderTop: '1px solid var(--hairline)', padding: '56px 32px 80px' }}>
+        <section className="gz-container" style={{ background: 'var(--canvas)', borderTop: '1px solid var(--hairline)', padding: '56px 32px 80px' }}>
           <div style={{ maxWidth: 1240, margin: '0 auto' }}>
-            <h2 style={{ fontSize: 32, fontWeight: 600, letterSpacing: '-0.4px', color: 'var(--ink)', marginBottom: 28 }}>Mais em {post.editoria.nome}</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+            <h2 className="gz-d-md" style={{ fontSize: 32, fontWeight: 600, letterSpacing: '-0.4px', color: 'var(--ink)', marginBottom: 28 }}>Mais em {post.editoria.nome}</h2>
+            <div className="gz-related-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
               {related.map((a) => (
                 <RelatedCard key={a.id} article={a} />
               ))}

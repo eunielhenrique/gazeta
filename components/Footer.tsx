@@ -25,9 +25,9 @@ export default function Footer() {
     },
   ];
   return (
-    <footer style={{ background: 'var(--canvas)', borderTop: '1px solid var(--hairline)', padding: '48px 32px 32px' }}>
+    <footer className="gz-container" style={{ background: 'var(--canvas)', borderTop: '1px solid var(--hairline)', padding: '48px 32px 32px' }}>
       <div style={{ maxWidth: 1240, margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1.4fr repeat(3,1fr)', gap: 48, paddingBottom: 40, borderBottom: '1px solid var(--hairline)' }}>
+        <div className="gz-footer-grid" style={{ display: 'grid', gridTemplateColumns: '1.4fr repeat(3,1fr)', gap: 48, paddingBottom: 40, borderBottom: '1px solid var(--hairline)' }}>
           <div>
             <Image src="/assets/logo-ink.png" alt="Gazeta de Alphaville" width={106} height={40} style={{ height: 40, width: 'auto', marginBottom: 16 }} />
             <p style={{ fontSize: 14, color: 'var(--body-mid)', lineHeight: '22.4px', maxWidth: 240 }}>
@@ -47,7 +47,7 @@ export default function Footer() {
             </div>
           ))}
         </div>
-        <div style={{ paddingTop: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+        <div className="gz-footer-bottom" style={{ paddingTop: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
           <span style={{ fontSize: 14, color: 'var(--mute)' }}>© 2026 Gazeta de Alphaville. Todos os direitos reservados.</span>
           <div style={{ display: 'flex', gap: 20 }}>
             {['Termos de uso', 'Privacidade', 'Cookies'].map((l) => (

@@ -39,18 +39,18 @@ function EditoriaCard({ ed, count }: { ed: (typeof EDITORIAS)[number]; count: nu
 
 export default function EditoriasSection({ counts }: { counts: Record<string, number> }) {
   return (
-    <section style={{ background: 'var(--canvas)', borderTop: '1px solid var(--hairline)', padding: '64px 32px 80px' }}>
+    <section className="gz-container" style={{ background: 'var(--canvas)', borderTop: '1px solid var(--hairline)', padding: '64px 32px 80px' }}>
       <div style={{ maxWidth: 1240, margin: '0 auto' }}>
         <div style={{ marginBottom: 32 }}>
           <span style={{ display: 'block', fontSize: 15, fontWeight: 500, letterSpacing: '1.5px', textTransform: 'uppercase', color: 'var(--body-mid)', marginBottom: 14 }}>Editorias</span>
-          <h2 style={{ fontSize: 44.8, fontWeight: 600, lineHeight: '46.6px', letterSpacing: '-0.8px', color: 'var(--ink)', maxWidth: 720 }}>
+          <h2 className="gz-d-section" style={{ fontSize: 44.8, fontWeight: 600, lineHeight: '46.6px', letterSpacing: '-0.8px', color: 'var(--ink)', maxWidth: 720 }}>
             Cada notícia da SECOM é classificada e publicada na editoria certa, automaticamente
           </h2>
           <p style={{ fontSize: 16, fontWeight: 400, lineHeight: '25.6px', letterSpacing: '-0.16px', color: 'var(--body)', maxWidth: 620, marginTop: 14 }}>
             Ao receber um e-mail, o sistema identifica a editoria pelas palavras-chave do conteúdo e publica no portal — sem intervenção manual. Estas são as oito editorias monitoradas.
           </p>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+        <div className="gz-editorias-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
           {EDITORIAS.map((ed) => (
             <EditoriaCard key={ed.slug} ed={ed} count={counts[ed.slug] ?? 0} />
           ))}
