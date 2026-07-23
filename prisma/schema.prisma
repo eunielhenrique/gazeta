@@ -108,3 +108,14 @@ model NewsletterSubscriber {
 
   @@map("newsletter_subscriber")
 }
+
+/// Foto anexa de e-mail da SECOM, armazenada no banco e servida em /api/media/{id}.
+model MediaAsset {
+  id        String   @id @default(cuid())
+  filename  String?
+  mime      String
+  bytes     Bytes
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("media_asset")
+}
