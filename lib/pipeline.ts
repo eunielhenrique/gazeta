@@ -1,6 +1,6 @@
 import { prisma } from './db';
 import { classify } from './classifier';
-import { slugify, readTimeMin, excerptFrom, cleanSubject } from './format';
+import { slugify, readTimeMin, excerptFrom, cleanSubject, cleanEmailBody } from './format';
 import type { Attachment } from './ingest-types';
 
 /**
@@ -116,7 +116,8 @@ export async function ingestEmail(raw: RawEmail): Promise<IngestOutcome> {
 
   // 7. Gera o post (auto-publica ou entra em revisão)
   const title = cleanSubject(raw.subject);
-  const excerpt = excerptFrom(raw.bodyText);
+  const cleanBody = cleanEmailBody(raw.bodyText, title);
+  const excerpt = excerptFrom(cleanBody);
   const slug = await uniqueSlug(slugify(title));
   const cover =
     raw.attachments?.find((a) => a.mime?.startsWith('image/'))?.url ??
@@ -128,11 +129,11 @@ export async function ingestEmail(raw: RawEmail): Promise<IngestOutcome> {
       slug,
       title,
       excerpt,
-      body: raw.bodyText,
+      body: cleanBody,
       editoriaSlug: result.editoria,
       regiaoSlug: result.regiao,
       coverImageUrl: cover,
-      readTimeMin: readTimeMin(raw.bodyText),
+      readTimeMin: readTimeMin(cleanBody),
       status: decision.postStatus,
       confidence: result.score,
       emailId: email.id,

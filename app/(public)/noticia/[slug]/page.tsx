@@ -5,6 +5,7 @@ import RelatedCard from '@/components/RelatedCard';
 import { Avatar } from '@/components/primitives';
 import { getPostBySlug } from '@/lib/posts';
 import { regiaoNome } from '@/lib/taxonomy';
+import { bodyParagraphs } from '@/lib/format';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,10 +27,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   if (!data) notFound();
   const { post, related } = data;
 
-  const paragraphs = post.body
-    .split(/\n{2,}/)
-    .map((p) => p.trim())
-    .filter(Boolean);
+  const paragraphs = bodyParagraphs(post.body);
   const sourceCity = post.regiao.slug === 'regiao' ? 'Santana de Parnaíba' : regiaoNome(post.regiao.slug);
 
   return (
