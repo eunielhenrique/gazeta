@@ -17,12 +17,12 @@ export function slugify(title: string): string {
     .slice(0, 80);
 }
 
-/** Limpa prefixos comuns de assunto de e-mail encaminhado. */
+/** Limpa prefixos comuns de assunto de e-mail encaminhado (aplicado em loop: "Enc: Release: X" → "X"). */
 export function cleanSubject(subject: string | null | undefined): string {
-  return (subject || '')
-    .replace(/^\s*(res|re|enc|fw|fwd|encaminhado)\s*:\s*/gi, '')
-    .replace(/\[\s*secom\s*\]/gi, '')
-    .trim();
+  let s = (subject || '').replace(/\[\s*secom\s*\]/gi, '').trim();
+  const prefix = /^\s*(res|re|enc|fw|fwd|encaminhado|release)\s*:\s*/i;
+  while (prefix.test(s)) s = s.replace(prefix, '');
+  return s.trim();
 }
 
 /** read_time_min ~ 200 palavras/min. */

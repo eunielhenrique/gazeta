@@ -30,10 +30,25 @@ function escapeRegex(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+/**
+ * Keyword vira padrão que também casa o plural: "jogo" pega "jogos",
+ * "operacao" pega "operacoes" (texto já normalizado, sem acento).
+ */
+function pluralPattern(normalized: string): string {
+  const last = normalized.split(' ').pop() || '';
+  const base = escapeRegex(normalized);
+  if (last.endsWith('ao')) return base.replace(/ao$/, '(ao|oes|aos|aes)');
+  if (last.endsWith('l')) return base.replace(/l$/, '(l|is)');
+  if (last.endsWith('m')) return base.replace(/m$/, '(m|ns)');
+  if (last.endsWith('r') || last.endsWith('z')) return `${base}(es)?`;
+  if (last.endsWith('s')) return base;
+  return `${base}s?`;
+}
+
 function countOccurrences(haystack: string, needle: string): number {
   const n = normalize(needle);
   if (!n) return 0;
-  const re = new RegExp(`(^|[^a-z0-9])${escapeRegex(n)}([^a-z0-9]|$)`, 'g');
+  const re = new RegExp(`(^|[^a-z0-9])${pluralPattern(n)}([^a-z0-9]|$)`, 'g');
   return (haystack.match(re) || []).length;
 }
 
