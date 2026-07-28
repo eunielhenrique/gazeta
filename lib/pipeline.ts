@@ -130,7 +130,7 @@ export async function ingestEmail(raw: RawEmail): Promise<IngestOutcome> {
   const slug = await uniqueSlug(slugify(title));
   const cover =
     raw.attachments?.find((a) => a.mime?.startsWith('image/'))?.url ??
-    `https://picsum.photos/seed/${slug}/1200/700`;
+    `${process.env.SITE_URL ?? 'https://gazetadealphaville.com.br'}/capa-padrao.svg`;
   const willPublish = decision.action === 'publish';
 
   const post = await prisma.post.create({

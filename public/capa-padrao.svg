@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <rect width="1200" height="700" fill="#161616"/>
+  <rect x="0" y="0" width="1200" height="2" fill="#2e2e2e"/>
+  <rect x="0" y="698" width="1200" height="2" fill="#2e2e2e"/>
+  <g text-anchor="middle" fill="#ffffff">
+    <text x="600" y="322" font-family="Arial, Helvetica, sans-serif" font-size="26" letter-spacing="6" opacity="0.72">GAZETA DE</text>
+    <text x="600" y="398" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="bold" letter-spacing="1">Alphaville</text>
+    <text x="600" y="446" font-family="Arial, Helvetica, sans-serif" font-size="20" letter-spacing="3" opacity="0.55">.com.br</text>
+  </g>
+  <rect x="520" y="470" width="160" height="2" fill="#3a3a3a"/>
+</svg>

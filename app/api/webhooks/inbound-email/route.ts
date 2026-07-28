@@ -1,11 +1,30 @@
 import { NextResponse } from 'next/server';
+import sharp from 'sharp';
 import { ingestEmail } from '@/lib/pipeline';
 import { prisma } from '@/lib/db';
 import type { Attachment } from '@/lib/ingest-types';
 
 const SITE_URL = process.env.SITE_URL ?? 'https://gazetadealphaville.com.br';
 const MAX_INLINE_ATTACHMENTS = 6;
-const MAX_INLINE_BYTES = 8 * 1024 * 1024; // por anexo, após decode
+const MAX_INLINE_BYTES = 25 * 1024 * 1024; // por anexo, após decode (foto de câmera passa de 7 MB)
+const MAX_STORED_BYTES = 8 * 1024 * 1024; // teto do que vai pro banco sem conseguir redimensionar
+const RESIZE_ABOVE_BYTES = 600 * 1024; // acima disso, reencoda para web
+const MAX_WIDTH = 1920;
+
+/** Foto de câmera vira JPEG de tela (~200-500 KB); se o sharp não der conta, mantém o original. */
+async function toWebImage(bytes: Buffer, mime: string): Promise<{ bytes: Buffer; mime: string }> {
+  if (bytes.length <= RESIZE_ABOVE_BYTES) return { bytes, mime };
+  try {
+    const out = await sharp(bytes, { failOn: 'none' })
+      .rotate()
+      .resize({ width: MAX_WIDTH, withoutEnlargement: true })
+      .jpeg({ quality: 82, mozjpeg: true })
+      .toBuffer();
+    return { bytes: out, mime: 'image/jpeg' };
+  } catch {
+    return { bytes, mime };
+  }
+}
 
 type InboundAttachment = Attachment & { contentBase64?: string };
 
@@ -30,10 +49,12 @@ async function storeInlineAttachments(raw: InboundAttachment[]): Promise<Attachm
       continue;
     }
     if (bytes.length === 0 || bytes.length > MAX_INLINE_BYTES) continue;
+    const web = await toWebImage(bytes, att.mime);
+    if (web.bytes.length > MAX_STORED_BYTES) continue;
     const asset = await prisma.mediaAsset.create({
-      data: { filename: att.filename ?? null, mime: att.mime, bytes: new Uint8Array(bytes) },
+      data: { filename: att.filename ?? null, mime: web.mime, bytes: new Uint8Array(web.bytes) },
     });
-    out.push({ ...rest, bytes: bytes.length, url: `${SITE_URL}/api/media/${asset.id}` });
+    out.push({ ...rest, mime: web.mime, bytes: web.bytes.length, url: `${SITE_URL}/api/media/${asset.id}` });
   }
   return out;
 }
