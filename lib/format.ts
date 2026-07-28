@@ -38,6 +38,19 @@ export function normalizeNewlines(text: string | null | undefined): string {
  */
 export function cleanEmailBody(bodyText: string, title?: string): string {
   let text = normalizeNewlines(bodyText).trim();
+
+  // Encaminhamento manual: descarta o que vem antes do marcador (nota ou
+  // assinatura de quem encaminhou) e o bloco de cabeçalho De:/Data:/Assunto:/
+  // Para: que o Gmail embute; o conteúdo real é o que segue a linha em branco.
+  const fwd = /^-{4,}\s*(forwarded message|mensagem encaminhada)\s*-*\s*$/im.exec(text);
+  if (fwd) {
+    let rest = text.slice(fwd.index + fwd[0].length).replace(/^\n+/, '');
+    const headerStart = /^(de|from|date|data|enviad[oa]|subject|assunto|to|para|cc):/i;
+    const firstBlank = rest.search(/\n\s*\n/);
+    if (headerStart.test(rest) && firstBlank !== -1) rest = rest.slice(firstBlank);
+    text = rest.trim();
+  }
+
   const markers = [
     /^--+\s*$/m,
     /^\s*atenciosamente[;,.:]?\s*$/im,

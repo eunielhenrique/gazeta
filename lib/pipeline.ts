@@ -118,6 +118,15 @@ export async function ingestEmail(raw: RawEmail): Promise<IngestOutcome> {
   const title = cleanSubject(raw.subject);
   const cleanBody = cleanEmailBody(raw.bodyText, title);
   const excerpt = excerptFrom(cleanBody);
+
+  // Mesmo release chegando por dois caminhos (filtro automático + encaminhamento
+  // manual) tem Message-ID diferente; o título limpo é o dedup que resta.
+  const samePost = await prisma.post.findUnique({ where: { slug: slugify(title) } });
+  if (samePost) {
+    await prisma.ingestEmail.update({ where: { id: email.id }, data: { status: 'discarded' } });
+    return { status: 'duplicate', emailId: email.id, postId: samePost.id, postSlug: samePost.slug };
+  }
+
   const slug = await uniqueSlug(slugify(title));
   const cover =
     raw.attachments?.find((a) => a.mime?.startsWith('image/'))?.url ??
