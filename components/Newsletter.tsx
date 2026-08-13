@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { IcoArrow, IcoCheck } from './icons';
+import Agora from './Agora';
 
 export default function Newsletter() {
   const [h, setH] = useState(false);
@@ -61,9 +62,7 @@ export default function Newsletter() {
         </form>
       )}
 
-      <div style={{ marginTop: 28, aspectRatio: '1/1', borderRadius: 'var(--r-md)', background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 52, fontWeight: 500, color: 'rgba(255,255,255,.92)', letterSpacing: '-1px' }}>20:31</div>
-      </div>
+      <Agora />
     </div>
   );
 }
