@@ -33,6 +33,11 @@ services:
       - key: SECOM_ALLOWLIST
         scope: RUN_TIME
         value: secom@santanadeparnaiba.sp.gov.br
+      # Bloqueios extras além dos já versionados em lib/sender-policy.ts
+      # (smafel@ é bloqueado no código — não depende desta env).
+      - key: SECOM_BLOCKLIST
+        scope: RUN_TIME
+        value: ""
       - key: INBOUND_WEBHOOK_SECRET
         scope: RUN_TIME
         type: SECRET

@@ -56,7 +56,10 @@ POST /api/webhooks/inbound-email      header: x-webhook-secret: $INBOUND_WEBHOOK
 { "message_id", "from", "subject", "text", "html", "attachments": [] }
 ```
 
-Só remetentes em `SECOM_ALLOWLIST` são aceitos.
+Só remetentes em `SECOM_ALLOWLIST` são aceitos — e quem estiver na **blocklist** é
+recusado (403 `sender-blocked`) antes de virar log ou post, mesmo dentro da allowlist.
+A blocklist é `lib/sender-policy.ts` (versionada: `smafel@santanadeparnaiba.sp.gov.br`,
+agenda esportiva interna) mais o que vier na env `SECOM_BLOCKLIST`.
 
 ## API
 
@@ -97,6 +100,7 @@ Tudo roda como um serviço Docker + Managed Postgres. Spec em `.do/app.yaml`.
 |---|---|
 | `DATABASE_URL` / `DIRECT_URL` | Postgres (pool / direto p/ migração) |
 | `SECOM_ALLOWLIST` | remetentes aceitos no webhook (vírgula-separado) |
+| `SECOM_BLOCKLIST` | remetentes recusados, vence a allowlist (vírgula-separado; sem `@` = domínio) |
 | `INBOUND_WEBHOOK_SECRET` | valida o webhook de e-mail |
 | `ADMIN_TOKEN` | Bearer das rotas `/api/admin` |
 
