@@ -1,6 +1,7 @@
 import { prisma } from './db';
 import { classify } from './classifier';
 import { slugify, readTimeMin, excerptFrom, cleanSubject, cleanEmailBody } from './format';
+import { isAllowedSender, isBlockedSender } from './sender-policy';
 import type { Attachment } from './ingest-types';
 
 /**
@@ -35,18 +36,6 @@ export type IngestOutcome = {
   reason?: string;
 };
 
-/** Allowlist de remetentes da SECOM (env: SECOM_ALLOWLIST, vírgula-separado). */
-function isAllowedSender(from: string): boolean {
-  const raw = process.env.SECOM_ALLOWLIST?.trim();
-  if (!raw) return true; // sem allowlist configurada → aceita (dev)
-  const addr = from.toLowerCase();
-  return raw
-    .split(',')
-    .map((s) => s.trim().toLowerCase())
-    .filter(Boolean)
-    .some((allowed) => addr === allowed || addr.endsWith(`@${allowed}`) || addr.includes(allowed));
-}
-
 async function uniqueSlug(base: string): Promise<string> {
   let slug = base || 'noticia';
   let i = 2;
@@ -57,7 +46,10 @@ async function uniqueSlug(base: string): Promise<string> {
 }
 
 export async function ingestEmail(raw: RawEmail): Promise<IngestOutcome> {
-  // 1. Allowlist
+  // 1. Blocklist vence a allowlist: remetente bloqueado não gera post nem log.
+  if (isBlockedSender(raw.fromAddr)) {
+    return { status: 'rejected', reason: 'sender-blocked' };
+  }
   if (!isAllowedSender(raw.fromAddr)) {
     return { status: 'rejected', reason: 'sender-not-allowed' };
   }
