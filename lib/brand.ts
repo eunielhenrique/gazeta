@@ -17,6 +17,9 @@ export type Brand = {
   regionLabel: string;
   regionShort: string;
   themeColor: string;
+  /** Cor primária da marca — CTA (botão "Assine") e wordmark de texto quando não há logo. */
+  accentColor: string;
+  accentTextColor: string;
   /** null = sem arquivo oficial ainda; UI cai no wordmark de texto. */
   logoInk: string | null;
   logoWhite: string | null;
@@ -37,6 +40,8 @@ export const BRANDS: Record<string, Brand> = {
     regionLabel: REGION_LABEL,
     regionShort: REGION_SHORT,
     themeColor: '#080808',
+    accentColor: '#080808', // sem acento próprio — mantém o ink original do site.
+    accentTextColor: '#ffffff',
     logoInk: '/assets/gazeta/logo-ink.png',
     logoWhite: '/assets/gazeta/logo-white.png',
   },
@@ -50,6 +55,10 @@ export const BRANDS: Record<string, Brand> = {
     regionLabel: REGION_LABEL,
     regionShort: REGION_SHORT,
     themeColor: '#080808',
+    // Vermelho lido a olho do wordmark "aaah!" mandado no chat (sem arquivo
+    // pra amostrar o pixel exato) — troque pelo hex oficial assim que tiver.
+    accentColor: '#e31e24',
+    accentTextColor: '#ffffff',
     // TODO: soltar o arquivo oficial em public/assets/aaah/ e apontar aqui
     // (ver README § Whitelabel) — até lá a UI usa o wordmark de texto.
     logoInk: null,

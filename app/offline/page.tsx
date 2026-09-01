@@ -18,7 +18,7 @@ export default async function OfflinePage() {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={brand.logoInk} alt={brand.name} style={{ height: 40, width: 'auto', margin: '0 auto 24px' }} />
         ) : (
-          <span style={{ display: 'block', fontSize: 22, fontWeight: 600, letterSpacing: '-0.5px', color: 'var(--ink)', margin: '0 auto 24px' }}>{brand.shortName}</span>
+          <span style={{ display: 'block', fontSize: 22, fontWeight: 600, letterSpacing: '-0.5px', color: brand.accentColor, margin: '0 auto 24px' }}>{brand.shortName}</span>
         )}
         <h1 style={{ fontSize: 24, fontWeight: 600, color: 'var(--ink)' }}>Você está sem conexão</h1>
         <p style={{ fontSize: 16, color: 'var(--body-mid)', marginTop: 12, lineHeight: '25.6px' }}>

@@ -56,7 +56,7 @@ export default function Header({ brand }: { brand: Brand }) {
           {brand.logoInk ? (
             <Image src={brand.logoInk} alt={brand.name} width={100} height={38} style={{ height: 38, width: 'auto' }} priority />
           ) : (
-            <span style={{ fontSize: 22, fontWeight: 600, letterSpacing: '-0.5px', color: 'var(--ink)' }}>{brand.shortName}</span>
+            <span style={{ fontSize: 22, fontWeight: 600, letterSpacing: '-0.5px', color: brand.accentColor }}>{brand.shortName}</span>
           )}
         </Link>
         <div className="gz-header-divider" style={{ width: 1, height: 20, background: 'var(--hairline)', flexShrink: 0 }} />
@@ -119,7 +119,7 @@ export default function Header({ brand }: { brand: Brand }) {
               <IcoSearch />
             </button>
           )}
-          <Link className="gz-cta" href="/newsletter" style={{ padding: '12px 20px', borderRadius: 'var(--r-sm)', background: 'var(--ink)', color: '#fff', fontSize: 16, fontWeight: 500, letterSpacing: '-0.16px', display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', flexShrink: 0 }}>
+          <Link className="gz-cta" href="/newsletter" style={{ padding: '12px 20px', borderRadius: 'var(--r-sm)', background: brand.accentColor, color: brand.accentTextColor, fontSize: 16, fontWeight: 500, letterSpacing: '-0.16px', display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', flexShrink: 0 }}>
             Assine
           </Link>
           {/* Hambúrguer (mobile) */}
@@ -169,7 +169,7 @@ export default function Header({ brand }: { brand: Brand }) {
             <Link
               href="/newsletter"
               onClick={() => setMenuOpen(false)}
-              style={{ marginTop: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '14px 20px', borderRadius: 'var(--r-sm)', background: 'var(--ink)', color: '#fff', fontSize: 16, fontWeight: 500 }}
+              style={{ marginTop: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '14px 20px', borderRadius: 'var(--r-sm)', background: brand.accentColor, color: brand.accentTextColor, fontSize: 16, fontWeight: 500 }}
             >
               Assine a newsletter <IcoArrow />
             </Link>

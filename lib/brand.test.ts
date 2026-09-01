@@ -27,5 +27,7 @@ test('toda marca cadastrada expõe os campos que a UI depende', () => {
     assert.ok(brand.domain, `${brand.id}: domain`);
     assert.ok(brand.regionList, `${brand.id}: regionList`);
     assert.ok(brand.regionLabel, `${brand.id}: regionLabel`);
+    assert.match(brand.accentColor, /^#[0-9a-f]{6}$/i, `${brand.id}: accentColor hex válido`);
+    assert.match(brand.accentTextColor, /^#[0-9a-f]{6}$/i, `${brand.id}: accentTextColor hex válido`);
   }
 });

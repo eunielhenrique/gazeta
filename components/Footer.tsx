@@ -33,7 +33,7 @@ export default function Footer({ brand }: { brand: Brand }) {
             {brand.logoWhite ? (
               <Image src={brand.logoWhite} alt={brand.name} width={106} height={40} style={{ height: 40, width: 'auto', marginBottom: 16 }} />
             ) : (
-              <span style={{ display: 'block', fontSize: 24, fontWeight: 600, letterSpacing: '-0.5px', color: '#fff', marginBottom: 16 }}>{brand.shortName}</span>
+              <span style={{ display: 'block', fontSize: 24, fontWeight: 600, letterSpacing: '-0.5px', color: brand.accentColor, marginBottom: 16 }}>{brand.shortName}</span>
             )}
             <p style={{ fontSize: 14, color: 'rgba(255,255,255,.6)', lineHeight: '22.4px', maxWidth: 240 }}>
               Notícias de {brand.regionLabel}.
