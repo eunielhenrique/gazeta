@@ -73,14 +73,13 @@ export const BRANDS: Record<string, Brand> = {
     regionLabel: REGION_LABEL,
     regionShort: REGION_SHORT,
     themeColor: '#080808',
-    // Vermelho lido a olho do wordmark "aaah!" mandado no chat (sem arquivo
-    // pra amostrar o pixel exato) — troque pelo hex oficial assim que tiver.
-    accentColor: '#e31e24',
+    // Vermelho amostrado do próprio arquivo do logo (pixel dominante do
+    // traço: rgb(254,0,0)).
+    accentColor: '#fe0000',
     accentTextColor: '#ffffff',
-    // TODO: soltar o arquivo oficial em public/assets/aaah/ e apontar aqui
-    // (ver README § Whitelabel) — até lá a UI usa o wordmark de texto.
-    logoInk: null,
-    logoWhite: null,
+    // Logo oficial (fundo transparente, funciona em claro e escuro).
+    logoInk: '/assets/aaah/logo-ink.png',
+    logoWhite: '/assets/aaah/logo-white.png',
     // Rodapé claro — identidade própria, não herda o ink escuro da Gazeta.
     footer: {
       background: '#faf7f6',

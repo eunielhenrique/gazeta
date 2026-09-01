@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import type { Brand } from '@/lib/brand';
 import { dataSP, descreveTempo, formataTemp, horaSP } from '@/lib/tempo';
 
 type Tempo = { temperatura: number | null; codigo: number | null };
@@ -13,9 +14,11 @@ type Tempo = { temperatura: number | null; codigo: number | null };
  * daria divergência de hidratação (o servidor formata num instante, o
  * browser noutro).
  */
-export default function Agora({ regionShort = 'Alphaville' }: { regionShort?: string }) {
+export default function Agora({ brand }: { brand: Brand }) {
   const [agora, setAgora] = useState<Date | null>(null);
   const [tempo, setTempo] = useState<Tempo | null>(null);
+  const f = brand.footer;
+  const overlay = (a: number) => (f.onDark ? `rgba(255,255,255,${a})` : `rgba(20,20,20,${a})`);
 
   useEffect(() => {
     setAgora(new Date());
@@ -40,8 +43,8 @@ export default function Agora({ regionShort = 'Alphaville' }: { regionShort?: st
         marginTop: 28,
         aspectRatio: '1/1',
         borderRadius: 'var(--r-md)',
-        background: 'rgba(255,255,255,.05)',
-        border: '1px solid rgba(255,255,255,.1)',
+        background: overlay(0.05),
+        border: `1px solid ${overlay(0.1)}`,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -56,7 +59,7 @@ export default function Agora({ regionShort = 'Alphaville' }: { regionShort?: st
           fontFamily: 'var(--font-mono)',
           fontSize: 52,
           fontWeight: 500,
-          color: 'rgba(255,255,255,.92)',
+          color: f.heading,
           letterSpacing: '-1px',
           lineHeight: 1,
           // Segura a altura no primeiro paint, antes do relógio montar.
@@ -69,7 +72,7 @@ export default function Agora({ regionShort = 'Alphaville' }: { regionShort?: st
       <div
         style={{
           fontSize: 13,
-          color: 'rgba(255,255,255,.62)',
+          color: f.text,
           letterSpacing: '-0.13px',
           textTransform: 'capitalize',
         }}
@@ -82,18 +85,18 @@ export default function Agora({ regionShort = 'Alphaville' }: { regionShort?: st
           style={{
             marginTop: 10,
             paddingTop: 12,
-            borderTop: '1px solid rgba(255,255,255,.1)',
+            borderTop: `1px solid ${overlay(0.1)}`,
             width: '100%',
             display: 'flex',
             flexDirection: 'column',
             gap: 2,
           }}
         >
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 24, fontWeight: 500, color: 'rgba(255,255,255,.92)' }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 24, fontWeight: 500, color: f.heading }}>
             {formataTemp(tempo.temperatura)}
           </div>
-          <div style={{ fontSize: 12, color: 'rgba(255,255,255,.5)', letterSpacing: '.2px' }}>
-            {descreveTempo(tempo.codigo)} · {regionShort}
+          <div style={{ fontSize: 12, color: f.muted, letterSpacing: '.2px' }}>
+            {descreveTempo(tempo.codigo)} · {brand.regionShort}
           </div>
         </div>
       )}

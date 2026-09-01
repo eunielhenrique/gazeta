@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { PostDTO } from '@/lib/types';
+import { BRANDS, DEFAULT_BRAND_ID, type Brand } from '@/lib/brand';
 import PostCard from './PostCard';
 import Newsletter from './Newsletter';
 import { IcoArrow } from './icons';
@@ -13,14 +14,14 @@ export default function ArticleFeed({
   title,
   emptyHint,
   showSidebar = true,
-  regionList = 'Alphaville, Barueri e Santana de Parnaíba',
+  brand = BRANDS[DEFAULT_BRAND_ID],
 }: {
   articles: PostDTO[];
   title: string;
   emptyHint?: string;
   showSidebar?: boolean;
-  /** Só é usado (e some do bundle server→client) quando showSidebar renderiza a Newsletter. */
-  regionList?: string;
+  /** Obrigatório quando showSidebar renderiza a Newsletter. */
+  brand?: Brand;
 }) {
   const empty = articles.length === 0;
   return (
@@ -50,7 +51,7 @@ export default function ArticleFeed({
           </div>
           {showSidebar && (
             <div style={{ position: 'sticky', top: 96 }}>
-              <Newsletter regionList={regionList} />
+              <Newsletter brand={brand} />
             </div>
           )}
         </div>

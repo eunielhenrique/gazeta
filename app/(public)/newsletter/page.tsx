@@ -32,7 +32,7 @@ export default async function NewsletterPage() {
             ))}
           </div>
         </div>
-        <Newsletter regionList={brand.regionList} />
+        <Newsletter brand={brand} />
       </div>
     </section>
   );

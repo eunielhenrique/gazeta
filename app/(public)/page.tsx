@@ -1,4 +1,5 @@
 import Hero from '@/components/Hero';
+import AdBanner from '@/components/AdBanner';
 import ArticleFeed from '@/components/ArticleFeed';
 import EditoriasSection from '@/components/EditoriasSection';
 import { getHome, countsByEditoria } from '@/lib/posts';
@@ -11,8 +12,9 @@ export default async function HomePage() {
 
   return (
     <>
+      <AdBanner />
       {home.hero && <Hero hero={home.hero} secondary={home.secondary} />}
-      <ArticleFeed articles={home.latest} title="Últimas" regionList={brand.regionList} />
+      <ArticleFeed articles={home.latest} title="Últimas" brand={brand} />
       <EditoriasSection counts={counts} />
     </>
   );
