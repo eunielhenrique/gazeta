@@ -1,5 +1,17 @@
 /** Utilidades de texto compartilhadas entre front e pipeline. */
 
+/** O pipeline sempre grava o mesmo autor genérico (default do schema). */
+const DEFAULT_AUTHOR = 'Redação Gazeta';
+
+/**
+ * Byline de exibição — o post é o mesmo para todas as marcas (mesmo banco),
+ * então o autor gravado é sempre o genérico; na tela, cada marca mostra a
+ * própria redação em vez do nome de uma marca específica.
+ */
+export function authorLabel(author: string, brandShortName: string): string {
+  return author === DEFAULT_AUTHOR ? `Redação ${brandShortName}` : author;
+}
+
 export function normalize(str: string | null | undefined): string {
   return (str || '')
     .toLowerCase()

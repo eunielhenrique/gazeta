@@ -39,7 +39,7 @@ export default function ArticleFeed({
         <div className={showSidebar ? 'gz-feed-grid' : undefined} style={{ display: 'grid', gridTemplateColumns: showSidebar ? '1fr 320px' : '1fr', gap: 32, alignItems: 'start' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             {articles.map((a) => (
-              <PostCard key={a.id} article={a} />
+              <PostCard key={a.id} article={a} brand={brand} />
             ))}
             {showSidebar && (
               <div style={{ marginTop: 12, display: 'flex', justifyContent: 'center' }}>

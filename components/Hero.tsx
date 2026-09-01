@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import type { PostDTO } from '@/lib/types';
+import type { Brand } from '@/lib/brand';
+import { authorLabel } from '@/lib/format';
 import { Avatar, CatBadge } from './primitives';
 
-function SecondaryCard({ a }: { a: PostDTO }) {
+function SecondaryCard({ a, brand }: { a: PostDTO; brand: Brand }) {
   const [h, setH] = useState(false);
   return (
     <Link
@@ -39,14 +41,14 @@ function SecondaryCard({ a }: { a: PostDTO }) {
         </div>
         <h3 className="gz-d-sec" style={{ fontSize: 24, fontWeight: 600, lineHeight: '31.2px', letterSpacing: '-0.4px', color: '#fff', textWrap: 'balance' }}>{a.title}</h3>
         <div style={{ fontSize: 14, color: 'rgba(255,255,255,.64)' }}>
-          {a.author.split(' ')[0]} · {a.date} · {a.read_time_min} min
+          {authorLabel(a.author, brand.shortName).split(' ')[0]} · {a.date} · {a.read_time_min} min
         </div>
       </div>
     </Link>
   );
 }
 
-export default function Hero({ hero, secondary }: { hero: PostDTO; secondary: PostDTO[] }) {
+export default function Hero({ hero, secondary, brand }: { hero: PostDTO; secondary: PostDTO[]; brand: Brand }) {
   const [h, setH] = useState(false);
   return (
     <section style={{ background: 'var(--canvas)' }}>
@@ -83,9 +85,9 @@ export default function Hero({ hero, secondary }: { hero: PostDTO; secondary: Po
               <h2 className="gz-d-hero" style={{ fontSize: 44.8, fontWeight: 600, lineHeight: '46.6px', letterSpacing: '-0.8px', color: '#fff', textWrap: 'balance', maxWidth: 600 }}>{hero.title}</h2>
               <p style={{ fontSize: 16, fontWeight: 400, lineHeight: '25.6px', letterSpacing: '-0.16px', color: 'rgba(255,255,255,.8)', maxWidth: 540 }}>{hero.excerpt}</p>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 2 }}>
-                <Avatar name={hero.author} size={40} />
+                <Avatar name={authorLabel(hero.author, brand.shortName)} size={40} />
                 <div>
-                  <div style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>{hero.author}</div>
+                  <div style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>{authorLabel(hero.author, brand.shortName)}</div>
                   <div style={{ fontSize: 14, fontWeight: 400, color: 'rgba(255,255,255,.62)' }}>
                     {hero.date} · {hero.read_time_min} min de leitura
                   </div>
@@ -96,7 +98,7 @@ export default function Hero({ hero, secondary }: { hero: PostDTO; secondary: Po
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             {secondary.map((a) => (
-              <SecondaryCard key={a.id} a={a} />
+              <SecondaryCard key={a.id} a={a} brand={brand} />
             ))}
           </div>
         </div>

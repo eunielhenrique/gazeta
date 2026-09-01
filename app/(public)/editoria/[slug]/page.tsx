@@ -25,7 +25,7 @@ export default async function EditoriaPage({ params }: { params: Promise<{ slug:
   const ed = editoriaBySlug(slug);
   if (!ed) notFound();
 
-  const [{ items }, counts] = await Promise.all([listPosts({ editoria: slug, limit: 48 }), countsByEditoria()]);
+  const [{ items }, counts, brand] = await Promise.all([listPosts({ editoria: slug, limit: 48 }), countsByEditoria(), getBrand()]);
 
   return (
     <div>
@@ -52,7 +52,7 @@ export default async function EditoriaPage({ params }: { params: Promise<{ slug:
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             {items.map((a) => (
-              <PostCard key={a.id} article={a} />
+              <PostCard key={a.id} article={a} brand={brand} />
             ))}
           </div>
         )}

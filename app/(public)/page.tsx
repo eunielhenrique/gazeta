@@ -13,7 +13,7 @@ export default async function HomePage() {
   return (
     <>
       <AdBanner />
-      {home.hero && <Hero hero={home.hero} secondary={home.secondary} />}
+      {home.hero && <Hero hero={home.hero} secondary={home.secondary} brand={brand} />}
       <ArticleFeed articles={home.latest} title="Últimas" brand={brand} />
       <EditoriasSection counts={counts} />
     </>

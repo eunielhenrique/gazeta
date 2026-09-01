@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import type { PostDTO } from '@/lib/types';
+import type { Brand } from '@/lib/brand';
+import { authorLabel } from '@/lib/format';
 import { Avatar, CatBadge, ReadTime } from './primitives';
 
-export default function PostCard({ article }: { article: PostDTO }) {
+export default function PostCard({ article, brand }: { article: PostDTO; brand: Brand }) {
   const [h, setH] = useState(false);
   return (
     <Link
@@ -47,8 +49,8 @@ export default function PostCard({ article }: { article: PostDTO }) {
           {article.excerpt.length > 128 ? article.excerpt.slice(0, 128) + '…' : article.excerpt}
         </p>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 2 }}>
-          <Avatar name={article.author} size={36} />
-          <span style={{ fontSize: 16, fontWeight: 500, color: 'var(--ink)' }}>{article.author}</span>
+          <Avatar name={authorLabel(article.author, brand.shortName)} size={36} />
+          <span style={{ fontSize: 16, fontWeight: 500, color: 'var(--ink)' }}>{authorLabel(article.author, brand.shortName)}</span>
           <span style={{ color: 'var(--mute-soft)' }}>·</span>
           <span style={{ fontSize: 14, color: 'var(--mute)' }}>{article.date}</span>
         </div>
