@@ -78,8 +78,16 @@ export function resolveBrand(host: string | null | undefined): Brand {
   return match ?? BRANDS[DEFAULT_BRAND_ID];
 }
 
-/** Lê o host da requisição atual — Server Components, layouts e metadata. */
+/**
+ * Lê o host da requisição atual — Server Components, layouts e metadata.
+ *
+ * Domínios "alias" (ex.: aaah.com.br) atrás do load balancer da DigitalOcean
+ * App Platform chegam ao container com `host` reescrito pro domínio PRIMARY
+ * do app — o hostname pedido de verdade vem em `x-forwarded-host`. Outros
+ * proxies (Vercel, dev local) mandam o host real direto em `host`, então
+ * `x-forwarded-host` é só preferido quando presente.
+ */
 export async function getBrand(): Promise<Brand> {
   const h = await headers();
-  return resolveBrand(h.get('host'));
+  return resolveBrand(h.get('x-forwarded-host') ?? h.get('host'));
 }
