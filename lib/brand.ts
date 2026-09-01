@@ -23,6 +23,16 @@ export type Brand = {
   /** null = sem arquivo oficial ainda; UI cai no wordmark de texto. */
   logoInk: string | null;
   logoWhite: string | null;
+  /** Rodapé — não é sempre escuro: cada marca define o próprio tema. */
+  footer: {
+    background: string;
+    heading: string;
+    text: string;
+    muted: string;
+    hairline: string;
+    /** true = usa logoWhite (fundo escuro); false = usa logoInk (fundo claro). */
+    onDark: boolean;
+  };
 };
 
 const REGION_LIST = 'Alphaville, Barueri e Santana de Parnaíba';
@@ -44,6 +54,14 @@ export const BRANDS: Record<string, Brand> = {
     accentTextColor: '#ffffff',
     logoInk: '/assets/gazeta/logo-ink.png',
     logoWhite: '/assets/gazeta/logo-white.png',
+    footer: {
+      background: '#080808',
+      heading: '#ffffff',
+      text: 'rgba(255,255,255,.6)',
+      muted: 'rgba(255,255,255,.45)',
+      hairline: 'rgba(255,255,255,.12)',
+      onDark: true,
+    },
   },
   aaah: {
     id: 'aaah',
@@ -63,6 +81,15 @@ export const BRANDS: Record<string, Brand> = {
     // (ver README § Whitelabel) — até lá a UI usa o wordmark de texto.
     logoInk: null,
     logoWhite: null,
+    // Rodapé claro — identidade própria, não herda o ink escuro da Gazeta.
+    footer: {
+      background: '#faf7f6',
+      heading: '#141414',
+      text: 'rgba(20,20,20,.64)',
+      muted: 'rgba(20,20,20,.45)',
+      hairline: 'rgba(20,20,20,.1)',
+      onDark: false,
+    },
   },
 };
 

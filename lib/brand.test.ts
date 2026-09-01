@@ -29,5 +29,11 @@ test('toda marca cadastrada expõe os campos que a UI depende', () => {
     assert.ok(brand.regionLabel, `${brand.id}: regionLabel`);
     assert.match(brand.accentColor, /^#[0-9a-f]{6}$/i, `${brand.id}: accentColor hex válido`);
     assert.match(brand.accentTextColor, /^#[0-9a-f]{6}$/i, `${brand.id}: accentTextColor hex válido`);
+    assert.ok(brand.footer.background, `${brand.id}: footer.background`);
+    assert.equal(typeof brand.footer.onDark, 'boolean', `${brand.id}: footer.onDark`);
   }
+});
+
+test('cada marca tem rodapé próprio, não compartilhado', () => {
+  assert.notEqual(BRANDS.gazeta.footer.background, BRANDS.aaah.footer.background);
 });
