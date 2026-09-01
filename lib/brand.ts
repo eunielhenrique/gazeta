@@ -23,6 +23,14 @@ export type Brand = {
   /** null = sem arquivo oficial ainda; UI cai no wordmark de texto. */
   logoInk: string | null;
   logoWhite: string | null;
+  /** Aba do navegador, atalho no celular, ícone do PWA. */
+  icons: {
+    favicon64: string;
+    icon192: string;
+    icon512: string;
+    iconMaskable512: string;
+    appleTouchIcon: string;
+  };
   /** Rodapé — não é sempre escuro: cada marca define o próprio tema. */
   footer: {
     background: string;
@@ -54,6 +62,13 @@ export const BRANDS: Record<string, Brand> = {
     accentTextColor: '#ffffff',
     logoInk: '/assets/gazeta/logo-ink.png',
     logoWhite: '/assets/gazeta/logo-white.png',
+    icons: {
+      favicon64: '/favicon-64.png',
+      icon192: '/icon-192.png',
+      icon512: '/icon-512.png',
+      iconMaskable512: '/icon-maskable-512.png',
+      appleTouchIcon: '/apple-touch-icon.png',
+    },
     footer: {
       background: '#080808',
       heading: '#ffffff',
@@ -80,6 +95,13 @@ export const BRANDS: Record<string, Brand> = {
     // Logo oficial (fundo transparente, funciona em claro e escuro).
     logoInk: '/assets/aaah/logo-ink.png',
     logoWhite: '/assets/aaah/logo-white.png',
+    icons: {
+      favicon64: '/assets/aaah/favicon-64.png',
+      icon192: '/assets/aaah/icon-192.png',
+      icon512: '/assets/aaah/icon-512.png',
+      iconMaskable512: '/assets/aaah/icon-maskable-512.png',
+      appleTouchIcon: '/assets/aaah/apple-touch-icon.png',
+    },
     // Rodapé claro — identidade própria, não herda o ink escuro da Gazeta.
     footer: {
       background: '#faf7f6',

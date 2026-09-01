@@ -18,9 +18,9 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
     theme_color: brand.themeColor,
     categories: ['news', 'magazines'],
     icons: [
-      { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
-      { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
-      { src: '/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+      { src: brand.icons.icon192, sizes: '192x192', type: 'image/png', purpose: 'any' },
+      { src: brand.icons.icon512, sizes: '512x512', type: 'image/png', purpose: 'any' },
+      { src: brand.icons.iconMaskable512, sizes: '512x512', type: 'image/png', purpose: 'maskable' },
     ],
     shortcuts: [
       { name: 'Últimas', url: '/' },

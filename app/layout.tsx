@@ -32,10 +32,10 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     icons: {
       icon: [
-        { url: '/favicon-64.png', sizes: '64x64', type: 'image/png' },
-        { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+        { url: brand.icons.favicon64, sizes: '64x64', type: 'image/png' },
+        { url: brand.icons.icon192, sizes: '192x192', type: 'image/png' },
       ],
-      apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+      apple: [{ url: brand.icons.appleTouchIcon, sizes: '180x180', type: 'image/png' }],
     },
     openGraph: {
       title: brand.name,
