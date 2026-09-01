@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { IcoArrow, IcoCheck } from './icons';
 import Agora from './Agora';
 
-export default function Newsletter() {
+export default function Newsletter({ regionList }: { regionList: string }) {
   const [h, setH] = useState(false);
   const [email, setEmail] = useState('');
   const [state, setState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
@@ -34,7 +34,7 @@ export default function Newsletter() {
       <span style={{ display: 'inline-block', fontSize: 12, fontWeight: 500, letterSpacing: '1.5px', textTransform: 'uppercase', color: 'var(--green)', marginBottom: 14 }}>Newsletter</span>
       <div style={{ fontSize: 44.8, fontWeight: 600, color: '#fff', letterSpacing: '-0.8px', lineHeight: '46.6px' }}>Toda semana</div>
       <div style={{ fontSize: 16, color: 'rgba(255,255,255,.62)', marginTop: 12, lineHeight: '25.6px', letterSpacing: '-0.16px' }}>
-        as principais notícias de Alphaville, Barueri e Santana de Parnaíba na sua caixa de entrada.
+        as principais notícias de {regionList} na sua caixa de entrada.
       </div>
 
       {state === 'done' ? (
@@ -62,7 +62,7 @@ export default function Newsletter() {
         </form>
       )}
 
-      <Agora />
+      <Agora regionShort={regionList.split(',')[0].trim()} />
     </div>
   );
 }

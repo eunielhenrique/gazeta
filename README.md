@@ -1,8 +1,32 @@
-# Gazeta de Alphaville
+# Gazeta de Alphaville — motor whitelabel
 
 Portal regional de notícias de **Alphaville · Barueri · Santana de Parnaíba e região**, com **publicação automática** a partir dos e-mails da SECOM: cada comunicado recebido é classificado por editoria e publicado no portal — alta confiança publica sozinho, confiança média entra na fila de revisão do painel.
 
 Implementação do design exportado do Claude Design (protótipo original preservado em `project/` e transcrições em `chats/`).
+
+## Whitelabel: uma base, várias marcas
+
+Este é o MESMO código/banco/automação servindo mais de um domínio — hoje
+`gazetadealphaville.com.br` e `aaah.com.br`. Não há conteúdo duplicado nem
+segunda automação: os posts, a classificação e a fila SECOM são únicos; só a
+**identidade visual** (nome, logo, metadata, PWA) muda conforme o domínio de
+acesso, resolvido em runtime pelo header `host` — ver `lib/brand.ts`.
+
+Adicionar uma marca nova:
+
+1. Acrescente uma entrada em `BRANDS` (`lib/brand.ts`) com `id`, `domain`,
+   `name`, `shortName`, `description` e os textos de região.
+2. Solte os arquivos oficiais de logo em `public/assets/<id>/logo-ink.png`
+   (fundo claro) e `logo-white.png` (fundo escuro) e aponte `logoInk` /
+   `logoWhite` pra eles. Sem os arquivos, a UI cai sozinha num wordmark de
+   texto (`shortName`) — nunca inventa/aproxima o logo.
+3. Aponte o domínio novo pro mesmo app no DNS e acrescente-o em
+   `domains:` do `.do/app.yaml` (ver comentário lá — fica no nível do app,
+   um serviço só atende todos os domínios).
+4. `npm test` — `lib/brand.test.ts` cobre a resolução por host.
+
+Nenhuma tabela nova, nenhuma automação duplicada: o pipeline SECOM
+(`lib/pipeline.ts`) e o banco continuam únicos e alimentam todas as marcas.
 
 ## Stack
 

@@ -1,9 +1,9 @@
-// Service worker — Gazeta de Alphaville (PWA)
+// Service worker — motor whitelabel (PWA), compartilhado entre as marcas.
 // Estratégia:
 //  - navegações (páginas): network-first (notícia é conteúdo fresco), com
 //    fallback pro cache e, por fim, uma página offline.
 //  - estáticos (_next, assets, ícones): stale-while-revalidate.
-const VERSION = 'gza-v1';
+const VERSION = 'gza-v2';
 const STATIC_CACHE = `${VERSION}-static`;
 const PAGE_CACHE = `${VERSION}-pages`;
 const OFFLINE_URL = '/offline';

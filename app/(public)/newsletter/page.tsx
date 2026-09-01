@@ -1,13 +1,18 @@
 import type { Metadata } from 'next';
 import Newsletter from '@/components/Newsletter';
 import { EDITORIAS } from '@/lib/taxonomy';
+import { getBrand } from '@/lib/brand';
 
-export const metadata: Metadata = {
-  title: 'Assine a newsletter — Gazeta de Alphaville',
-  description: 'Receba as principais notícias de Alphaville, Barueri e Santana de Parnaíba toda semana.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const brand = await getBrand();
+  return {
+    title: `Assine a newsletter — ${brand.name}`,
+    description: `Receba as principais notícias de ${brand.regionList} toda semana.`,
+  };
+}
 
-export default function NewsletterPage() {
+export default async function NewsletterPage() {
+  const brand = await getBrand();
   return (
     <section className="gz-container" style={{ maxWidth: 1240, margin: '0 auto', padding: '64px 32px 80px' }}>
       <div className="gz-newsletter-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: 56, alignItems: 'start' }}>
@@ -17,7 +22,7 @@ export default function NewsletterPage() {
             A região inteira, resumida na sua caixa de entrada
           </h1>
           <p style={{ fontSize: 20, fontWeight: 400, lineHeight: '30px', color: 'var(--body)', marginTop: 20, maxWidth: 560 }}>
-            Toda semana, um resumo das notícias que importam em Alphaville, Barueri e Santana de Parnaíba — direto das fontes oficiais, classificadas por editoria. Grátis, sem spam.
+            Toda semana, um resumo das notícias que importam em {brand.regionList} — direto das fontes oficiais, classificadas por editoria. Grátis, sem spam.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 32 }}>
             {EDITORIAS.map((ed) => (
@@ -27,7 +32,7 @@ export default function NewsletterPage() {
             ))}
           </div>
         </div>
-        <Newsletter />
+        <Newsletter regionList={brand.regionList} />
       </div>
     </section>
   );

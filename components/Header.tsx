@@ -5,9 +5,10 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { NAV } from '@/lib/taxonomy';
+import type { Brand } from '@/lib/brand';
 import { IcoSearch, IcoX, IcoMenu, IcoArrow } from './icons';
 
-export default function Header() {
+export default function Header({ brand }: { brand: Brand }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -52,7 +53,11 @@ export default function Header() {
     >
       <div className="gz-header-inner" style={{ maxWidth: 1240, margin: '0 auto', padding: '14px 32px', display: 'flex', alignItems: 'center', gap: 20 }}>
         <Link href="/" style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
-          <Image src="/assets/logo-ink.png" alt="Gazeta de Alphaville" width={100} height={38} style={{ height: 38, width: 'auto' }} priority />
+          {brand.logoInk ? (
+            <Image src={brand.logoInk} alt={brand.name} width={100} height={38} style={{ height: 38, width: 'auto' }} priority />
+          ) : (
+            <span style={{ fontSize: 22, fontWeight: 600, letterSpacing: '-0.5px', color: 'var(--ink)' }}>{brand.shortName}</span>
+          )}
         </Link>
         <div className="gz-header-divider" style={{ width: 1, height: 20, background: 'var(--hairline)', flexShrink: 0 }} />
 

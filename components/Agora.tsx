@@ -13,7 +13,7 @@ type Tempo = { temperatura: number | null; codigo: number | null };
  * daria divergência de hidratação (o servidor formata num instante, o
  * browser noutro).
  */
-export default function Agora() {
+export default function Agora({ regionShort = 'Alphaville' }: { regionShort?: string }) {
   const [agora, setAgora] = useState<Date | null>(null);
   const [tempo, setTempo] = useState<Tempo | null>(null);
 
@@ -93,7 +93,7 @@ export default function Agora() {
             {formataTemp(tempo.temperatura)}
           </div>
           <div style={{ fontSize: 12, color: 'rgba(255,255,255,.5)', letterSpacing: '.2px' }}>
-            {descreveTempo(tempo.codigo)} · Alphaville
+            {descreveTempo(tempo.codigo)} · {regionShort}
           </div>
         </div>
       )}

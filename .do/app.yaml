@@ -2,6 +2,12 @@
 # Esta é a configuração REAL usada no deploy (git source do repo público +
 # cluster Postgres gerenciado "gazeta-db" via doadmin).
 #
+# WHITELABEL: um único serviço serve as DUAS marcas (gazetadealphaville.com.br
+# e aaah.com.br) — mesmo banco, mesma automação SECOM, a marca é resolvida em
+# runtime pelo header `host` (ver lib/brand.ts). Por isso os dois domínios
+# apontam pro MESMO app/serviço abaixo, não pra apps separados. Nova marca =
+# 1 entrada em lib/brand.ts (BRANDS) + 1 domínio novo aqui.
+#
 # Deploy / atualização:
 #   doctl apps update <APP_ID> --spec .do/app.yaml
 #   (ou, na criação inicial: doctl apps create --spec .do/app.yaml)
@@ -10,6 +16,18 @@
 # antes de aplicar — não versione segredos reais neste arquivo público.
 name: gazeta-de-alphaville
 region: nyc
+
+# domains: fica no NÍVEL DO APP (não do service) — App Platform aceita vários
+# domínios customizados apontando pro mesmo app/serviço único abaixo.
+domains:
+  - domain: gazetadealphaville.com.br
+    type: PRIMARY
+  - domain: www.gazetadealphaville.com.br
+    type: ALIAS
+  - domain: aaah.com.br
+    type: ALIAS
+  - domain: www.aaah.com.br
+    type: ALIAS
 
 services:
   - name: web

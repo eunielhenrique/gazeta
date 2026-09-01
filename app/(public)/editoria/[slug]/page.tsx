@@ -4,6 +4,7 @@ import PostCard from '@/components/PostCard';
 import EditoriasSection from '@/components/EditoriasSection';
 import { editoriaBySlug, EDITORIAS } from '@/lib/taxonomy';
 import { listPosts, countsByEditoria } from '@/lib/posts';
+import { getBrand } from '@/lib/brand';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,7 +16,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const ed = editoriaBySlug(slug);
   if (!ed) return {};
-  return { title: `${ed.nome} — Gazeta de Alphaville`, description: ed.escopo };
+  const brand = await getBrand();
+  return { title: `${ed.nome} — ${brand.name}`, description: ed.escopo };
 }
 
 export default async function EditoriaPage({ params }: { params: Promise<{ slug: string }> }) {

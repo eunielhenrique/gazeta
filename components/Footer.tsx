@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { EDITORIAS } from '@/lib/taxonomy';
+import type { Brand } from '@/lib/brand';
 
-export default function Footer() {
+export default function Footer({ brand }: { brand: Brand }) {
   const cols: { label: string; links: { label: string; href: string }[] }[] = [
     { label: 'Editorias', links: EDITORIAS.map((e) => ({ label: e.nome, href: `/editoria/${e.slug}` })) },
     {
-      label: 'Gazeta',
+      label: brand.shortName,
       links: [
         { label: 'Sobre', href: '/sobre' },
         { label: 'Newsletter', href: '/newsletter' },
@@ -29,9 +30,13 @@ export default function Footer() {
       <div style={{ maxWidth: 1240, margin: '0 auto' }}>
         <div className="gz-footer-grid" style={{ display: 'grid', gridTemplateColumns: '1.4fr repeat(3,1fr)', gap: 48, paddingBottom: 40, borderBottom: '1px solid rgba(255,255,255,.12)' }}>
           <div>
-            <Image src="/assets/logo-white.png" alt="Gazeta de Alphaville" width={106} height={40} style={{ height: 40, width: 'auto', marginBottom: 16 }} />
+            {brand.logoWhite ? (
+              <Image src={brand.logoWhite} alt={brand.name} width={106} height={40} style={{ height: 40, width: 'auto', marginBottom: 16 }} />
+            ) : (
+              <span style={{ display: 'block', fontSize: 24, fontWeight: 600, letterSpacing: '-0.5px', color: '#fff', marginBottom: 16 }}>{brand.shortName}</span>
+            )}
             <p style={{ fontSize: 14, color: 'rgba(255,255,255,.6)', lineHeight: '22.4px', maxWidth: 240 }}>
-              Notícias de Alphaville, Barueri, Santana de Parnaíba e região.
+              Notícias de {brand.regionLabel}.
             </p>
           </div>
           {cols.map((g) => (
@@ -48,7 +53,7 @@ export default function Footer() {
           ))}
         </div>
         <div className="gz-footer-bottom" style={{ paddingTop: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
-          <span style={{ fontSize: 14, color: 'rgba(255,255,255,.45)' }}>© 2026 Gazeta de Alphaville. Todos os direitos reservados.</span>
+          <span style={{ fontSize: 14, color: 'rgba(255,255,255,.45)' }}>© {new Date().getFullYear()} {brand.name}. Todos os direitos reservados.</span>
           <div style={{ display: 'flex', gap: 20 }}>
             {['Termos de uso', 'Privacidade', 'Cookies'].map((l) => (
               <Link key={l} href="/sobre" style={{ fontSize: 14, color: 'rgba(255,255,255,.45)' }}>

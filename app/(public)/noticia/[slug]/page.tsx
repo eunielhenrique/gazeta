@@ -6,6 +6,7 @@ import { Avatar } from '@/components/primitives';
 import { getPostBySlug } from '@/lib/posts';
 import { regiaoNome } from '@/lib/taxonomy';
 import { bodyParagraphs } from '@/lib/format';
+import { getBrand } from '@/lib/brand';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,8 +15,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const data = await getPostBySlug(slug);
   if (!data) return {};
   const { post } = data;
+  const brand = await getBrand();
   return {
-    title: `${post.title} — Gazeta de Alphaville`,
+    title: `${post.title} — ${brand.name}`,
     description: post.excerpt,
     openGraph: { title: post.title, description: post.excerpt, images: post.cover_image_url ? [post.cover_image_url] : [] },
   };

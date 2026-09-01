@@ -13,11 +13,14 @@ export default function ArticleFeed({
   title,
   emptyHint,
   showSidebar = true,
+  regionList = 'Alphaville, Barueri e Santana de Parnaíba',
 }: {
   articles: PostDTO[];
   title: string;
   emptyHint?: string;
   showSidebar?: boolean;
+  /** Só é usado (e some do bundle server→client) quando showSidebar renderiza a Newsletter. */
+  regionList?: string;
 }) {
   const empty = articles.length === 0;
   return (
@@ -47,7 +50,7 @@ export default function ArticleFeed({
           </div>
           {showSidebar && (
             <div style={{ position: 'sticky', top: 96 }}>
-              <Newsletter />
+              <Newsletter regionList={regionList} />
             </div>
           )}
         </div>

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Poppins, Inconsolata } from 'next/font/google';
 import './globals.css';
 import PWARegister from '@/components/PWARegister';
+import { getBrand } from '@/lib/brand';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -17,32 +18,33 @@ const inconsolata = Inconsolata({
   display: 'swap',
 });
 
-export const metadata: Metadata = {
-  title: 'Gazeta de Alphaville — Notícias de Alphaville, Barueri e Santana de Parnaíba',
-  description:
-    'Portal regional de notícias de Alphaville, Barueri, Santana de Parnaíba e região. Cidade, Segurança, Saúde, Educação, Mobilidade, Economia, Cultura e Esporte.',
-  metadataBase: new URL('https://gazetadealphaville.com.br'),
-  manifest: '/manifest.webmanifest',
-  applicationName: 'Gazeta de Alphaville',
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: 'default',
-    title: 'Gazeta',
-  },
-  icons: {
-    icon: [
-      { url: '/favicon-64.png', sizes: '64x64', type: 'image/png' },
-      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
-    ],
-    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
-  },
-  openGraph: {
-    title: 'Gazeta de Alphaville',
-    description: 'Notícias de Alphaville, Barueri, Santana de Parnaíba e região.',
-    type: 'website',
-    locale: 'pt_BR',
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const brand = await getBrand();
+  return {
+    title: `${brand.name} — Notícias de ${brand.regionList}`,
+    description: brand.description,
+    metadataBase: new URL(`https://${brand.domain}`),
+    applicationName: brand.name,
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: 'default',
+      title: brand.shortName,
+    },
+    icons: {
+      icon: [
+        { url: '/favicon-64.png', sizes: '64x64', type: 'image/png' },
+        { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      ],
+      apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+    },
+    openGraph: {
+      title: brand.name,
+      description: `Notícias de ${brand.regionLabel}.`,
+      type: 'website',
+      locale: 'pt_BR',
+    },
+  };
+}
 
 export const viewport: Viewport = {
   width: 'device-width',
