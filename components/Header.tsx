@@ -140,7 +140,7 @@ export default function Header({ brand }: { brand: Brand }) {
             <span style={{ fontSize: 22, fontWeight: 600, letterSpacing: '-0.5px', color: brand.accentColor }}>{brand.shortName}</span>
           )}
         </Link>
-        {pathname === '/' && <AdBanner height={44} />}
+        {pathname === '/' && <AdBanner height={56} />}
       </div>
 
       {/* Drawer (mobile) */}
