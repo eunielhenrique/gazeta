@@ -1,11 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import type { HeroSlide } from '@/lib/types';
 import type { PostDTO } from '@/lib/types';
 import type { Brand } from '@/lib/brand';
 import { authorLabel } from '@/lib/format';
 import { Avatar, CatBadge } from './primitives';
+
+/** Troca de slide a cada 8s — tempo pra ler o título antes de revezar. */
+const INTERVALO_MS = 8000;
 
 function SecondaryCard({ a, brand }: { a: PostDTO; brand: Brand }) {
   const [h, setH] = useState(false);
@@ -48,13 +52,34 @@ function SecondaryCard({ a, brand }: { a: PostDTO; brand: Brand }) {
   );
 }
 
-export default function Hero({ hero, secondary, brand }: { hero: PostDTO; secondary: PostDTO[]; brand: Brand }) {
+export default function Hero({ slides, brand }: { slides: HeroSlide[]; brand: Brand }) {
   const [h, setH] = useState(false);
+  const [idx, setIdx] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (slides.length <= 1 || paused) return;
+    const id = setInterval(() => setIdx((i) => (i + 1) % slides.length), INTERVALO_MS);
+    return () => clearInterval(id);
+  }, [slides.length, paused]);
+
+  // A lista de posts pode encolher entre uma atualização e outra (ex.: post
+  // descartado) — trava o índice dentro dos limites em vez de quebrar.
+  const slide = slides[idx] ?? slides[0];
+  if (!slide) return null;
+  const { hero, secondary } = slide;
+
   return (
     <section style={{ background: 'var(--canvas)' }}>
       <div className="gz-container" style={{ maxWidth: 1240, margin: '0 auto', padding: '40px 32px' }}>
-        <div className="gz-hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.45fr 1fr', gap: 20, alignItems: 'stretch' }}>
+        <div
+          className="gz-hero-grid"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          style={{ display: 'grid', gridTemplateColumns: '1.45fr 1fr', gap: 20, alignItems: 'stretch' }}
+        >
           <Link
+            key={hero.id}
             href={`/noticia/${hero.slug}`}
             onMouseEnter={() => setH(true)}
             onMouseLeave={() => setH(false)}
@@ -102,6 +127,29 @@ export default function Hero({ hero, secondary, brand }: { hero: PostDTO; second
             ))}
           </div>
         </div>
+
+        {slides.length > 1 && (
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 20 }}>
+            {slides.map((s, i) => (
+              <button
+                key={s.hero.id}
+                onClick={() => setIdx(i)}
+                aria-label={`Ver destaque ${i + 1} de ${slides.length}`}
+                aria-current={i === idx}
+                style={{
+                  width: i === idx ? 22 : 8,
+                  height: 8,
+                  borderRadius: 'var(--r-full)',
+                  border: 'none',
+                  padding: 0,
+                  cursor: 'pointer',
+                  background: i === idx ? brand.accentColor : 'var(--hairline)',
+                  transition: 'width 220ms, background 220ms',
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

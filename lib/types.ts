@@ -36,8 +36,14 @@ export type PostListResponse = {
   has_more: boolean;
 };
 
-export type HomeResponse = {
-  hero: PostDTO | null;
+/** Um "slide" do destaque: 1 card grande + até 2 secundários. */
+export type HeroSlide = {
+  hero: PostDTO;
   secondary: PostDTO[];
+};
+
+export type HomeResponse = {
+  /** Até 3 grupos, montados com as últimas 9 matérias — o front revezia sozinho. */
+  slides: HeroSlide[];
   latest: PostDTO[];
 };

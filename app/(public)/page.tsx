@@ -11,7 +11,7 @@ export default async function HomePage() {
 
   return (
     <>
-      {home.hero && <Hero hero={home.hero} secondary={home.secondary} brand={brand} />}
+      {home.slides.length > 0 && <Hero slides={home.slides} brand={brand} />}
       <ArticleFeed articles={home.latest} title="Últimas" brand={brand} />
       <EditoriasSection counts={counts} brand={brand} />
     </>

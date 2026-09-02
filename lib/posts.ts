@@ -1,29 +1,39 @@
 import { prisma } from './db';
 import { toPostDTO } from './serialize';
-import type { PostDTO, HomeResponse } from './types';
+import type { PostDTO, HomeResponse, HeroSlide } from './types';
 import type { Prisma } from '@prisma/client';
 
 const PUBLISHED = { status: 'published' as const };
 
-/** Home: destaque (featured, senão o mais recente) + 2 secundários + feed. */
+/** Quantas matérias recentes alimentam o carrossel de destaque (3 slides de 3). */
+const SLIDE_POOL_SIZE = 9;
+
+/**
+ * Home: até 3 slides (1 destaque + 2 secundários cada), montados com as
+ * últimas 9 matérias publicadas — o carrossel troca de slide sozinho no
+ * front (ver components/Hero.tsx). O destaque marcado como featured, se
+ * houver, sempre abre o primeiro slide.
+ */
 export async function getHome(): Promise<HomeResponse> {
   const published = await prisma.post.findMany({
     where: PUBLISHED,
     orderBy: [{ publishedAt: 'desc' }, { createdAt: 'desc' }],
   });
-  if (published.length === 0) return { hero: null, secondary: [], latest: [] };
+  if (published.length === 0) return { slides: [], latest: [] };
 
-  const heroIdx = Math.max(
-    0,
-    published.findIndex((p) => p.featured),
-  );
-  const heroPost = published[published.findIndex((p) => p.featured) >= 0 ? heroIdx : 0];
-  const rest = published.filter((p) => p.id !== heroPost.id);
+  const featuredIdx = published.findIndex((p) => p.featured);
+  const ordered =
+    featuredIdx > 0 ? [published[featuredIdx], ...published.filter((_, i) => i !== featuredIdx)] : published;
+
+  const pool = ordered.slice(0, SLIDE_POOL_SIZE).map(toPostDTO);
+  const slides: HeroSlide[] = [];
+  for (let i = 0; i < pool.length; i += 3) {
+    slides.push({ hero: pool[i], secondary: pool.slice(i + 1, i + 3) });
+  }
 
   return {
-    hero: toPostDTO(heroPost),
-    secondary: rest.slice(0, 2).map(toPostDTO),
-    latest: rest.slice(2).map(toPostDTO),
+    slides,
+    latest: ordered.slice(SLIDE_POOL_SIZE).map(toPostDTO),
   };
 }
 
