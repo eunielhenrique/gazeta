@@ -65,7 +65,17 @@ export default function Header({ brand }: { brand: Brand }) {
         {hoje && (
           <span
             className="gz-header-date"
-            style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.4px', color: 'var(--body-mid)', whiteSpace: 'nowrap', flexShrink: 0 }}
+            style={{
+              fontSize: 13,
+              fontWeight: 700,
+              letterSpacing: '0.4px',
+              color: 'var(--body-mid)',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
+              background: 'rgba(8,8,8,.06)',
+              padding: '6px 12px',
+              borderRadius: 'var(--r-sm)',
+            }}
           >
             {hoje}
           </span>
@@ -156,7 +166,7 @@ export default function Header({ brand }: { brand: Brand }) {
             <span style={{ fontSize: 22, fontWeight: 600, letterSpacing: '-0.5px', color: brand.accentColor }}>{brand.shortName}</span>
           )}
         </Link>
-        {pathname === '/' && <AdBanner maxHeight={90} />}
+        <AdBanner height={110} />
       </div>
 
       {/* Drawer (mobile) */}
