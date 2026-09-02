@@ -18,7 +18,7 @@ export default function AdBanner({ height }: { height: number }) {
         alt="Prefeitura de Santana de Parnaíba — Educando no Parque, mais de 3 mil alunos atendidos"
         width={2427}
         height={303}
-        style={{ height: '100%', width: '100%', objectFit: 'contain', objectPosition: 'left center' }}
+        style={{ height: '100%', width: '100%', objectFit: 'contain', objectPosition: 'right center' }}
         priority
       />
     </a>
