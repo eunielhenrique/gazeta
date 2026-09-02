@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { dataSP, descreveTempo, formataTemp, horaSP } from './tempo';
+import { dataCompletaSP, dataSP, descreveTempo, formataTemp, horaSP } from './tempo';
 
 // 13/08/2026 12:21 UTC = 09:21 em São Paulo (UTC-3).
 const INSTANTE = new Date('2026-08-13T12:21:00Z');
@@ -18,6 +18,10 @@ test('hora não depende do fuso da máquina', () => {
 
 test('data por extenso em português', () => {
   assert.equal(dataSP(INSTANTE), 'quinta-feira, 13 de agosto');
+});
+
+test('data cheia em caixa alta, pro menu do header', () => {
+  assert.equal(dataCompletaSP(INSTANTE), 'QUINTA-FEIRA, 13 AGOSTO 2026');
 });
 
 test('código WMO vira condição em português', () => {

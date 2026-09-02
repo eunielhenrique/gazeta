@@ -76,14 +76,14 @@ export default function Hero({ hero, secondary, brand }: { hero: PostDTO; second
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={hero.cover_image_url ?? ''} alt={hero.title} style={{ width: '100%', height: '100%', objectFit: 'cover', transform: h ? 'scale(1.04)' : 'scale(1)', transition: 'transform 500ms ease' }} />
             </div>
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(8,8,8,.9) 0%, rgba(8,8,8,.5) 44%, rgba(8,8,8,.08) 74%, rgba(8,8,8,.28) 100%)' }} />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(8,8,8,.96) 0%, rgba(8,8,8,.86) 32%, rgba(8,8,8,.55) 60%, rgba(8,8,8,.12) 100%)' }} />
             <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 20 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <CatBadge editoria={hero.editoria} />
-                <span style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,.82)' }}>{hero.regiao.nome}</span>
+                <span style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,.82)', textShadow: '0 1px 3px rgba(0,0,0,.5)' }}>{hero.regiao.nome}</span>
               </div>
-              <h2 className="gz-d-hero" style={{ fontSize: 44.8, fontWeight: 600, lineHeight: '46.6px', letterSpacing: '-0.8px', color: '#fff', textWrap: 'balance', maxWidth: 600 }}>{hero.title}</h2>
-              <p style={{ fontSize: 16, fontWeight: 400, lineHeight: '25.6px', letterSpacing: '-0.16px', color: 'rgba(255,255,255,.8)', maxWidth: 540 }}>{hero.excerpt}</p>
+              <h2 className="gz-d-hero" style={{ fontSize: 44.8, fontWeight: 600, lineHeight: '46.6px', letterSpacing: '-0.8px', color: '#fff', textWrap: 'balance', maxWidth: 600, textShadow: '0 1px 4px rgba(0,0,0,.5)' }}>{hero.title}</h2>
+              <p style={{ fontSize: 16, fontWeight: 500, lineHeight: '25.6px', letterSpacing: '-0.16px', color: 'rgba(255,255,255,.94)', maxWidth: 540, textShadow: '0 1px 3px rgba(0,0,0,.55)' }}>{hero.excerpt}</p>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 2 }}>
                 <Avatar name={authorLabel(hero.author, brand.shortName)} size={40} />
                 <div>

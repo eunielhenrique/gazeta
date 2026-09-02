@@ -31,6 +31,13 @@ export type Brand = {
     iconMaskable512: string;
     appleTouchIcon: string;
   };
+  /**
+   * Override das cores das 8 editorias (mesma ordem de lib/taxonomia.json:
+   * cidade, segurança, saúde, educação, mobilidade, economia, cultura,
+   * esporte). null = usa a cor de cada editoria na taxonomia (padrão
+   * multicolor). Usado no grid de editorias da home.
+   */
+  editoriaPalette: { colors: string[]; text: string } | null;
   /** Rodapé — não é sempre escuro: cada marca define o próprio tema. */
   footer: {
     background: string;
@@ -62,6 +69,7 @@ export const BRANDS: Record<string, Brand> = {
     accentTextColor: '#ffffff',
     logoInk: '/assets/gazeta/logo-ink.png',
     logoWhite: '/assets/gazeta/logo-white.png',
+    editoriaPalette: null, // paleta multicolor original da taxonomia.
     icons: {
       favicon64: '/favicon-64.png',
       icon192: '/icon-192.png',
@@ -95,6 +103,12 @@ export const BRANDS: Record<string, Brand> = {
     // Logo oficial (fundo transparente, funciona em claro e escuro).
     logoInk: '/assets/aaah/logo-ink.png',
     logoWhite: '/assets/aaah/logo-white.png',
+    // Tons diversificados de vermelho pastel (não o arco-íris da taxonomia)
+    // pra manter as 8 editorias na família de cor da marca.
+    editoriaPalette: {
+      colors: ['#F2A6A6', '#E8837E', '#F2B8AE', '#D98E9B', '#F0A38C', '#C97B7B', '#E8A0A8', '#DE8B78'],
+      text: '#3A1210',
+    },
     icons: {
       favicon64: '/assets/aaah/favicon-64.png',
       icon192: '/assets/aaah/icon-192.png',
@@ -102,14 +116,14 @@ export const BRANDS: Record<string, Brand> = {
       iconMaskable512: '/assets/aaah/icon-maskable-512.png',
       appleTouchIcon: '/assets/aaah/apple-touch-icon.png',
     },
-    // Rodapé claro — identidade própria, não herda o ink escuro da Gazeta.
+    // Rodapé na cor da marca — logo branca por cima do vermelho.
     footer: {
-      background: '#faf7f6',
-      heading: '#141414',
-      text: 'rgba(20,20,20,.64)',
-      muted: 'rgba(20,20,20,.45)',
-      hairline: 'rgba(20,20,20,.1)',
-      onDark: false,
+      background: '#fe0000',
+      heading: '#ffffff',
+      text: 'rgba(255,255,255,.75)',
+      muted: 'rgba(255,255,255,.55)',
+      hairline: 'rgba(255,255,255,.2)',
+      onDark: true,
     },
   },
 };

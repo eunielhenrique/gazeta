@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { NAV } from '@/lib/taxonomy';
 import type { Brand } from '@/lib/brand';
+import { dataCompletaSP } from '@/lib/tempo';
 import { IcoSearch, IcoX, IcoMenu, IcoArrow } from './icons';
 import AdBanner from './AdBanner';
 
@@ -16,7 +17,14 @@ export default function Header({ brand }: { brand: Brand }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [q, setQ] = useState('');
+  const [hoje, setHoje] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Só monta no cliente: a data do servidor pode divergir da de quem acessa
+  // (fuso, cache) e causaria erro de hidratação.
+  useEffect(() => {
+    setHoje(dataCompletaSP(new Date()));
+  }, []);
 
   useEffect(() => {
     if (searchOpen) inputRef.current?.focus();
@@ -54,6 +62,14 @@ export default function Header({ brand }: { brand: Brand }) {
     >
       {/* Linha 1: navegação, busca e CTA */}
       <div className="gz-header-inner" style={{ maxWidth: 1240, margin: '0 auto', padding: '14px 32px', display: 'flex', alignItems: 'center', gap: 20 }}>
+        {hoje && (
+          <span
+            className="gz-header-date"
+            style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.4px', color: 'var(--body-mid)', whiteSpace: 'nowrap', flexShrink: 0 }}
+          >
+            {hoje}
+          </span>
+        )}
         {/* Navegação inline (desktop) */}
         <nav className="gz-nav-inline no-scroll-bar" style={{ display: 'flex', gap: 2, flex: 1, marginLeft: 4, overflowX: 'auto' }}>
           {NAV.map((item) => {
@@ -140,7 +156,7 @@ export default function Header({ brand }: { brand: Brand }) {
             <span style={{ fontSize: 22, fontWeight: 600, letterSpacing: '-0.5px', color: brand.accentColor }}>{brand.shortName}</span>
           )}
         </Link>
-        {pathname === '/' && <AdBanner height={56} />}
+        {pathname === '/' && <AdBanner maxHeight={90} />}
       </div>
 
       {/* Drawer (mobile) */}

@@ -58,7 +58,7 @@ export default async function EditoriaPage({ params }: { params: Promise<{ slug:
         )}
       </section>
 
-      <EditoriasSection counts={counts} />
+      <EditoriasSection counts={counts} brand={brand} />
     </div>
   );
 }

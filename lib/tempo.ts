@@ -26,6 +26,15 @@ export function dataSP(d: Date): string {
   }).format(d);
 }
 
+/** `SEGUNDA-FEIRA, 10 AGOSTO 2026` — data cheia em caixa alta, pro menu do header. */
+export function dataCompletaSP(d: Date): string {
+  const weekday = new Intl.DateTimeFormat('pt-BR', { timeZone: FUSO, weekday: 'long' }).format(d);
+  const day = new Intl.DateTimeFormat('pt-BR', { timeZone: FUSO, day: '2-digit' }).format(d);
+  const month = new Intl.DateTimeFormat('pt-BR', { timeZone: FUSO, month: 'long' }).format(d);
+  const year = new Intl.DateTimeFormat('pt-BR', { timeZone: FUSO, year: 'numeric' }).format(d);
+  return `${weekday}, ${day} ${month} ${year}`.toUpperCase();
+}
+
 /**
  * Códigos WMO do Open-Meteo → português.
  * Faixas contíguas viram intervalo; o resto cai no rótulo genérico.

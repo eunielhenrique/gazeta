@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { EDITORIAS } from '@/lib/taxonomy';
+import type { Brand } from '@/lib/brand';
 
-function EditoriaCard({ ed, count }: { ed: (typeof EDITORIAS)[number]; count: number }) {
+function EditoriaCard({ ed, count, color, textColor }: { ed: (typeof EDITORIAS)[number]; count: number; color: string; textColor: string }) {
   const [h, setH] = useState(false);
   return (
     <Link
@@ -21,8 +22,8 @@ function EditoriaCard({ ed, count }: { ed: (typeof EDITORIAS)[number]; count: nu
         borderRadius: 'var(--r-md)',
         overflow: 'hidden',
         padding: 24,
-        background: ed.cor,
-        color: ed.texto_sobre_cor,
+        background: color,
+        color: textColor,
         boxShadow: h ? 'var(--shadow-3)' : 'none',
         transform: h ? 'translateY(-3px)' : 'none',
         transition: 'box-shadow 220ms, transform 220ms',
@@ -37,7 +38,8 @@ function EditoriaCard({ ed, count }: { ed: (typeof EDITORIAS)[number]; count: nu
   );
 }
 
-export default function EditoriasSection({ counts }: { counts: Record<string, number> }) {
+export default function EditoriasSection({ counts, brand }: { counts: Record<string, number>; brand: Brand }) {
+  const palette = brand.editoriaPalette;
   return (
     <section className="gz-container" style={{ background: 'var(--canvas)', borderTop: '1px solid var(--hairline)', padding: '64px 32px 80px' }}>
       <div style={{ maxWidth: 1240, margin: '0 auto' }}>
@@ -51,8 +53,14 @@ export default function EditoriasSection({ counts }: { counts: Record<string, nu
           </p>
         </div>
         <div className="gz-editorias-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
-          {EDITORIAS.map((ed) => (
-            <EditoriaCard key={ed.slug} ed={ed} count={counts[ed.slug] ?? 0} />
+          {EDITORIAS.map((ed, i) => (
+            <EditoriaCard
+              key={ed.slug}
+              ed={ed}
+              count={counts[ed.slug] ?? 0}
+              color={palette?.colors[i] ?? ed.cor}
+              textColor={palette?.text ?? ed.texto_sobre_cor}
+            />
           ))}
         </div>
       </div>
