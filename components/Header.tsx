@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { NAV } from '@/lib/taxonomy';
 import type { Brand } from '@/lib/brand';
 import { IcoSearch, IcoX, IcoMenu, IcoArrow } from './icons';
+import AdBanner from './AdBanner';
 
 export default function Header({ brand }: { brand: Brand }) {
   const router = useRouter();
@@ -51,16 +52,8 @@ export default function Header({ brand }: { brand: Brand }) {
       className="gz-header"
       style={{ position: 'sticky', top: 0, zIndex: 300, background: 'var(--canvas)', borderBottom: '1px solid var(--hairline)' }}
     >
+      {/* Linha 1: navegação, busca e CTA */}
       <div className="gz-header-inner" style={{ maxWidth: 1240, margin: '0 auto', padding: '14px 32px', display: 'flex', alignItems: 'center', gap: 20 }}>
-        <Link href="/" style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
-          {brand.logoInk ? (
-            <Image src={brand.logoInk} alt={brand.name} width={100} height={38} style={{ height: 38, width: 'auto' }} priority />
-          ) : (
-            <span style={{ fontSize: 22, fontWeight: 600, letterSpacing: '-0.5px', color: brand.accentColor }}>{brand.shortName}</span>
-          )}
-        </Link>
-        <div className="gz-header-divider" style={{ width: 1, height: 20, background: 'var(--hairline)', flexShrink: 0 }} />
-
         {/* Navegação inline (desktop) */}
         <nav className="gz-nav-inline no-scroll-bar" style={{ display: 'flex', gap: 2, flex: 1, marginLeft: 4, overflowX: 'auto' }}>
           {NAV.map((item) => {
@@ -133,6 +126,21 @@ export default function Header({ brand }: { brand: Brand }) {
             {menuOpen ? <IcoX size={18} /> : <IcoMenu />}
           </button>
         </div>
+      </div>
+
+      {/* Linha 2: logo + banner (só na home) */}
+      <div
+        className="gz-header-masthead"
+        style={{ maxWidth: 1240, margin: '0 auto', padding: '0 32px 14px', display: 'flex', alignItems: 'center', gap: 20 }}
+      >
+        <Link href="/" style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+          {brand.logoInk ? (
+            <Image src={brand.logoInk} alt={brand.name} width={100} height={38} style={{ height: 38, width: 'auto' }} priority />
+          ) : (
+            <span style={{ fontSize: 22, fontWeight: 600, letterSpacing: '-0.5px', color: brand.accentColor }}>{brand.shortName}</span>
+          )}
+        </Link>
+        {pathname === '/' && <AdBanner height={44} />}
       </div>
 
       {/* Drawer (mobile) */}
