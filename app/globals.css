@@ -104,6 +104,14 @@ body {
 .gz-d-sec { font-size: clamp(19px, 4.6vw, 24px) !important; overflow-wrap: anywhere; }
 .gz-d-md { font-size: clamp(22px, 5vw, 32px) !important; overflow-wrap: anywhere; }
 
+/* Troca de slide do carrossel de destaque (Hero.tsx) — cada card remonta
+   com uma chave nova a cada slide, então a animação toca sozinha. */
+@keyframes gzFadeSlide {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.gz-hero-fade { animation: gzFadeSlide 480ms ease both; }
+
 /* Safe-area (notch) para o header quando instalado como PWA */
 .gz-header { padding-top: env(safe-area-inset-top); }
 /* Deixa a nav encolher e rolar em vez de empurrar os botões pra fora */

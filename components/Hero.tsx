@@ -11,14 +11,14 @@ import { Avatar, CatBadge } from './primitives';
 /** Troca de slide a cada 8s — tempo pra ler o título antes de revezar. */
 const INTERVALO_MS = 8000;
 
-function SecondaryCard({ a, brand }: { a: PostDTO; brand: Brand }) {
+function SecondaryCard({ a, brand, delayMs = 0 }: { a: PostDTO; brand: Brand; delayMs?: number }) {
   const [h, setH] = useState(false);
   return (
     <Link
       href={`/noticia/${a.slug}`}
       onMouseEnter={() => setH(true)}
       onMouseLeave={() => setH(false)}
-      className="gz-hero-sec"
+      className="gz-hero-sec gz-hero-fade"
       style={{
         position: 'relative',
         flex: 1,
@@ -30,6 +30,7 @@ function SecondaryCard({ a, brand }: { a: PostDTO; brand: Brand }) {
         overflow: 'hidden',
         padding: 26,
         boxShadow: h ? 'var(--shadow-3)' : 'var(--shadow-2)',
+        animationDelay: `${delayMs}ms`,
         transition: 'box-shadow 220ms',
       }}
     >
@@ -83,7 +84,7 @@ export default function Hero({ slides, brand }: { slides: HeroSlide[]; brand: Br
             href={`/noticia/${hero.slug}`}
             onMouseEnter={() => setH(true)}
             onMouseLeave={() => setH(false)}
-            className="gz-hero-main"
+            className="gz-hero-main gz-hero-fade"
             style={{
               position: 'relative',
               display: 'flex',
@@ -122,8 +123,8 @@ export default function Hero({ slides, brand }: { slides: HeroSlide[]; brand: Br
           </Link>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            {secondary.map((a) => (
-              <SecondaryCard key={a.id} a={a} brand={brand} />
+            {secondary.map((a, i) => (
+              <SecondaryCard key={a.id} a={a} brand={brand} delayMs={i * 90} />
             ))}
           </div>
         </div>

@@ -109,12 +109,20 @@ export function classify(
   }
   const score = scores[winner] || 0;
 
-  // região
+  // região — mesmo critério da editoria: título pesa 2x, mais menções
+  // ganha. Antes pegava a primeira região da lista que aparecesse em
+  // qualquer lugar do texto (mesmo uma citação de passagem no corpo),
+  // então a ordem do array em vez do conteúdo decidia a região.
   let regiao = tax.regiao_padrao;
+  let melhorRegiaoScore = 0;
   for (const r of tax.regioes) {
-    if (countOccurrences(full, r.nome) > 0 || full.includes(normalize(r.slug))) {
+    const inTitle = countOccurrences(nSubject, r.nome);
+    const inBody = countOccurrences(nBody, r.nome);
+    let hits = inTitle * 2 + inBody;
+    if (hits === 0 && full.includes(normalize(r.slug))) hits = 1;
+    if (hits > melhorRegiaoScore) {
+      melhorRegiaoScore = hits;
       regiao = r.slug;
-      break;
     }
   }
 
