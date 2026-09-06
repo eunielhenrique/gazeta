@@ -26,3 +26,6 @@ npm-debug.log*
 .vercel
 /.idea
 /.vscode
+
+# instagram (sessão do navegador, caches e relatórios do script scripts/instagram)
+/.instagram
