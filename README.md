@@ -76,9 +76,21 @@ e-mail (webhook/IMAP) → classificador → score
 Configure um provedor de inbound parse (SendGrid / Mailgun / Postmark) apontando para:
 
 ```
-POST /api/webhooks/inbound-email      header: x-webhook-secret: $INBOUND_WEBHOOK_SECRET
-{ "message_id", "from", "subject", "text", "html", "attachments": [] }
+POST /api/webhooks/inbound-email             header: x-webhook-secret: $INBOUND_WEBHOOK_SECRET
+{ "message_id", "from", "subject", "text", "html", "received_at", "attachments": [] }
+
+POST /api/webhooks/inbound-email/attachment  (mesmo header) — uma foto por requisição
+{ "message_id", "filename", "mime", "contentBase64" }
 ```
+
+A ingestão é em **duas fases**: o texto entra numa requisição pequena (é o que
+publica a matéria; `received_at` preserva a data original do release) e cada
+foto vai depois, separadamente — a primeira que chegar vira capa; sem foto, o
+site usa a capa de fallback da editoria (`/api/capa/[editoria]`). Uma tentativa
+que cair no meio é **retomada** no reenvio (mesmo `message_id`), nunca respondida
+como duplicata. O encaminhador oficial é `scripts/apps-script-secom.js` (Google
+Apps Script na caixa que recebe a SECOM): tenta o texto até 3 vezes antes de
+rotular a thread com `gazeta-erro`; sucesso recebe `gazeta-processado`.
 
 Só remetentes em `SECOM_ALLOWLIST` são aceitos — e quem estiver na **blocklist** é
 recusado (403 `sender-blocked`) antes de virar log ou post, mesmo dentro da allowlist.

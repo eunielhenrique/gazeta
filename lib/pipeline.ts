@@ -54,44 +54,59 @@ export async function ingestEmail(raw: RawEmail): Promise<IngestOutcome> {
     return { status: 'rejected', reason: 'sender-not-allowed' };
   }
 
-  // 2. Idempotência por Message-ID
-  const existing = await prisma.ingestEmail.findUnique({ where: { messageId: raw.messageId } });
-  if (existing) {
-    const post = await prisma.post.findUnique({ where: { emailId: existing.id } });
-    return { status: 'duplicate', emailId: existing.id, postId: post?.id, postSlug: post?.slug };
+  // 2. Idempotência por Message-ID. E-mail já com post (ou descartado) é
+  // duplicata. E-mail gravado SEM post é uma tentativa anterior que caiu no
+  // meio (container reiniciado, timeout do encaminhador): retoma do ponto em
+  // que parou em vez de responder "duplicata" e perder a matéria para sempre.
+  const existing = await prisma.ingestEmail.findUnique({
+    where: { messageId: raw.messageId },
+    include: { post: true },
+  });
+  if (existing && (existing.post || existing.status === 'discarded')) {
+    return { status: 'duplicate', emailId: existing.id, postId: existing.post?.id, postSlug: existing.post?.slug };
   }
 
   // 3. Classifica
   const result = classify({ subject: raw.subject, body: raw.bodyText });
   const { decision } = result;
 
-  // 4. Registra e-mail (auditoria)
-  const email = await prisma.ingestEmail.create({
-    data: {
-      messageId: raw.messageId,
-      fromAddr: raw.fromAddr,
-      subject: raw.subject,
-      bodyText: raw.bodyText,
-      bodyHtml: raw.bodyHtml ?? null,
-      attachments: (raw.attachments ?? []) as object[],
-      rawHeaders: raw.rawHeaders ?? {},
-      status: decision.emailStatus,
-      receivedAt: raw.receivedAt ?? new Date(),
-    },
-  });
+  // 4. Registra e-mail (auditoria) — ou reaproveita o registro da tentativa anterior
+  const email =
+    existing ??
+    (await prisma.ingestEmail.create({
+      data: {
+        messageId: raw.messageId,
+        fromAddr: raw.fromAddr,
+        subject: raw.subject,
+        bodyText: raw.bodyText,
+        bodyHtml: raw.bodyHtml ?? null,
+        attachments: (raw.attachments ?? []) as object[],
+        rawHeaders: raw.rawHeaders ?? {},
+        status: decision.emailStatus,
+        receivedAt: raw.receivedAt ?? new Date(),
+      },
+    }));
+  if (existing) {
+    await prisma.ingestEmail.update({
+      where: { id: existing.id },
+      data: { attachments: (raw.attachments ?? []) as object[], status: decision.emailStatus, error: null },
+    });
+  }
 
   // 5. Registra classificação (explicável)
-  await prisma.classification.create({
-    data: {
-      emailId: email.id,
-      editoriaSlug: result.editoria,
-      regiaoSlug: result.regiao,
-      score: result.score,
-      scores: result.scores,
-      matchedTerms: result.matched,
-      taxonomiaVersao: result.taxonomiaVersao,
-      method: 'rules',
-    },
+  const classification = {
+    editoriaSlug: result.editoria,
+    regiaoSlug: result.regiao,
+    score: result.score,
+    scores: result.scores,
+    matchedTerms: result.matched,
+    taxonomiaVersao: result.taxonomiaVersao,
+    method: 'rules' as const,
+  };
+  await prisma.classification.upsert({
+    where: { emailId: email.id },
+    create: { emailId: email.id, ...classification },
+    update: classification,
   });
 
   // 6. Descarte: não gera post publicável, fica só o log
