@@ -5,12 +5,12 @@ import type { Prisma } from '@prisma/client';
 
 const PUBLISHED = { status: 'published' as const };
 
-/** Quantas matérias recentes alimentam o carrossel de destaque (3 slides de 3). */
-const SLIDE_POOL_SIZE = 9;
+/** Quantas matérias recentes alimentam o carrossel de destaque (5 slides de 3). */
+const SLIDE_POOL_SIZE = 15;
 
 /**
- * Home: até 3 slides (1 destaque + 2 secundários cada), montados com as
- * últimas 9 matérias publicadas — o carrossel troca de slide sozinho no
+ * Home: até 5 slides (1 destaque + 2 secundários cada), montados com as
+ * últimas 15 matérias publicadas — o carrossel troca de slide sozinho no
  * front (ver components/Hero.tsx). O destaque marcado como featured, se
  * houver, sempre abre o primeiro slide.
  */
