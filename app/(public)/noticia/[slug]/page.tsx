@@ -2,10 +2,9 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import RelatedCard from '@/components/RelatedCard';
-import { Avatar } from '@/components/primitives';
 import { getPostBySlug } from '@/lib/posts';
 import { regiaoNome } from '@/lib/taxonomy';
-import { authorLabel, bodyParagraphs } from '@/lib/format';
+import { bodyParagraphs } from '@/lib/format';
 import { getBrand } from '@/lib/brand';
 
 export const dynamic = 'force-dynamic';
@@ -25,12 +24,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const [data, brand] = await Promise.all([getPostBySlug(slug), getBrand()]);
+  const data = await getPostBySlug(slug);
   if (!data) notFound();
   const { post, related } = data;
 
   const paragraphs = bodyParagraphs(post.body);
-  const author = authorLabel(post.author, brand.shortName);
   const sourceCity = post.regiao.slug === 'regiao' ? 'Santana de Parnaíba' : regiaoNome(post.regiao.slug);
 
   return (
@@ -42,14 +40,8 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
             <span style={{ fontSize: 14, fontWeight: 500, color: 'var(--body-mid)' }}>{post.regiao.nome}</span>
           </Link>
           <h1 className="gz-d-post" style={{ fontSize: 44.8, fontWeight: 600, lineHeight: '46.6px', letterSpacing: '-0.8px', color: 'var(--ink)', textWrap: 'balance' }}>{post.title}</h1>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 24, paddingBottom: 24, borderBottom: '1px solid var(--hairline)' }}>
-            <Avatar name={author} size={40} />
-            <div>
-              <div style={{ fontSize: 16, fontWeight: 500, color: 'var(--ink)' }}>{author}</div>
-              <div style={{ fontSize: 14, color: 'var(--mute)' }}>
-                {post.date} · {post.read_time_min} min de leitura
-              </div>
-            </div>
+          <div style={{ fontSize: 14, color: 'var(--mute)', marginTop: 24, paddingBottom: 24, borderBottom: '1px solid var(--hairline)' }}>
+            {post.date} · {post.read_time_min} min de leitura
           </div>
         </div>
         <div className="gz-container" style={{ maxWidth: 1040, margin: '0 auto', padding: '0 32px' }}>

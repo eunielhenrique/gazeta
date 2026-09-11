@@ -3,11 +3,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import type { PostDTO } from '@/lib/types';
-import type { Brand } from '@/lib/brand';
-import { authorLabel } from '@/lib/format';
-import { Avatar, CatBadge, ReadTime } from './primitives';
+import { CatBadge, ReadTime } from './primitives';
 
-export default function PostCard({ article, brand }: { article: PostDTO; brand: Brand }) {
+export default function PostCard({ article }: { article: PostDTO }) {
   const [h, setH] = useState(false);
   return (
     <Link
@@ -48,12 +46,7 @@ export default function PostCard({ article, brand }: { article: PostDTO; brand: 
         <p style={{ fontSize: 16, fontWeight: 400, lineHeight: '25.6px', letterSpacing: '-0.16px', color: 'var(--body)', maxWidth: '96%' }}>
           {article.excerpt.length > 128 ? article.excerpt.slice(0, 128) + '…' : article.excerpt}
         </p>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 2 }}>
-          <Avatar name={authorLabel(article.author, brand.shortName)} size={36} />
-          <span style={{ fontSize: 16, fontWeight: 500, color: 'var(--ink)' }}>{authorLabel(article.author, brand.shortName)}</span>
-          <span style={{ color: 'var(--mute-soft)' }}>·</span>
-          <span style={{ fontSize: 14, color: 'var(--mute)' }}>{article.date}</span>
-        </div>
+        <div style={{ fontSize: 14, color: 'var(--mute)', marginTop: 2 }}>{article.date}</div>
       </div>
     </Link>
   );
