@@ -52,7 +52,13 @@ export function coverColors(brand: Brand, editoriaSlug: string): { background: s
 
 const FONT = "Poppins, 'Segoe UI', Helvetica, Arial, sans-serif";
 
-/** SVG 16:9 (mesma proporção da capa no post e nos cards) — sem fontes externas. */
+/**
+ * SVG 16:9 (mesma proporção da capa no post e nos cards) — sem fontes
+ * externas e SEM texto grande: nos cards e no destaque da home o título da
+ * matéria é escrito por cima da capa com um degradê escuro, então qualquer
+ * texto grande aqui vazaria por baixo. Fica a cor da editoria, as formas e
+ * duas etiquetas pequenas no topo (marca e editoria), longe do bloco de texto.
+ */
 export function renderCoverSvg(brand: Brand, editoriaSlug: string): string {
   const { background, text, nome } = coverColors(brand, editoriaSlug);
   const w = COVER_WIDTH;
@@ -62,11 +68,11 @@ export function renderCoverSvg(brand: Brand, editoriaSlug: string): string {
   <g fill="${escapeXml(text)}" opacity="0.08">
     <circle cx="${w - 120}" cy="${h + 80}" r="420"/>
     <circle cx="${w + 40}" cy="-60" r="260"/>
+    <circle cx="-80" cy="${h - 40}" r="220"/>
   </g>
-  <g font-family="${escapeXml(FONT)}" fill="${escapeXml(text)}">
-    <text x="72" y="104" font-size="26" font-weight="600" letter-spacing="4" style="text-transform:uppercase">${escapeXml(brand.name.toUpperCase())}</text>
-    <text x="72" y="${h - 132}" font-size="96" font-weight="700" letter-spacing="-3">${escapeXml(nome)}</text>
-    <text x="72" y="${h - 72}" font-size="26" font-weight="500" opacity="0.85">${escapeXml(brand.regionLabel)}</text>
+  <g font-family="${escapeXml(FONT)}" fill="${escapeXml(text)}" font-size="22" font-weight="600" letter-spacing="4" opacity="0.7">
+    <text x="64" y="76">${escapeXml(brand.name.toUpperCase())}</text>
+    <text x="${w - 64}" y="76" text-anchor="end">${escapeXml(nome.toUpperCase())}</text>
   </g>
 </svg>
 `;

@@ -30,7 +30,9 @@ test('svg gerado é 16:9, leva a marca e escapa caracteres', () => {
   assert.ok(svg.startsWith('<svg'));
   assert.ok(svg.includes('viewBox="0 0 1200 675"'));
   assert.ok(svg.includes('AAAH!'));
-  assert.ok(svg.includes('Segurança'));
+  assert.ok(svg.includes('SEGURANÇA'));
+  // sem texto grande: nada acima de 22px, para não vazar sob o título nos cards
+  assert.ok(!/font-size="(2[3-9]|[3-9]\d|\d{3})"/.test(svg), svg);
   assert.ok(!svg.includes('<script'));
   const evil = renderCoverSvg({ ...BRANDS.gazeta, name: 'a<b>&"c"' }, 'cidade');
   assert.ok(evil.includes('A&lt;B&gt;&amp;&quot;C&quot;'));

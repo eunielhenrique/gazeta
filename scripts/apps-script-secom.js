@@ -34,7 +34,7 @@ const CONFIG = {
   LABEL_OK: 'gazeta-processado',
   LABEL_ERRO: 'gazeta-erro',
   MAX_FOTOS: 4,
-  MAX_BYTES_FOTO: 7 * 1024 * 1024, // 7 MB por foto
+  MAX_BYTES_FOTO: 15 * 1024 * 1024, // 15 MB por foto (o site redimensiona; foto maior era descartada em silêncio)
   MAX_TENTATIVAS: 3, // falhas do texto antes de marcar gazeta-erro
   THREADS_POR_EXECUCAO: 10,
 };
