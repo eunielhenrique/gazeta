@@ -14,8 +14,8 @@ export default function AdBanner({ height }: { height: number }) {
       style={{ display: 'block', flex: 1, minWidth: 0, height, overflow: 'hidden', borderRadius: 'var(--r-sm)' }}
     >
       <Image
-        src="/assets/banners/educando-no-parque.jpg"
-        alt="Prefeitura de Santana de Parnaíba — Educando no Parque, mais de 3 mil alunos atendidos"
+        src="/assets/banners/santana-bicampea-melhor-cidade.jpg"
+        alt="Santana de Parnaíba — Bicampeã do Brasil, melhor cidade do país de porte médio (Veja Negócios / Austin Rating)"
         width={2427}
         height={303}
         style={{ height: '100%', width: '100%', objectFit: 'contain', objectPosition: 'right center' }}
