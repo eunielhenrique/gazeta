@@ -166,7 +166,7 @@ export default function Header({ brand }: { brand: Brand }) {
             <span style={{ fontSize: 22, fontWeight: 600, letterSpacing: '-0.5px', color: brand.accentColor }}>{brand.shortName}</span>
           )}
         </Link>
-        <AdBanner height={110} />
+        <AdBanner />
       </div>
 
       {/* Drawer (mobile) */}
