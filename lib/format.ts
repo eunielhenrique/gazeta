@@ -29,10 +29,15 @@ export function slugify(title: string): string {
     .slice(0, 80);
 }
 
-/** Limpa prefixos comuns de assunto de e-mail encaminhado (aplicado em loop: "Enc: Release: X" → "X"). */
+/**
+ * Limpa prefixos de assunto de e-mail — encaminhamento ("Enc:", "Fwd:") e
+ * jargão de assessoria ("Release:", "Sugestão de pauta:", "Nota de imprensa:")
+ * que nunca deve virar manchete. Aplicado em loop: "Enc: Release: X" → "X".
+ */
 export function cleanSubject(subject: string | null | undefined): string {
   let s = (subject || '').replace(/\[\s*secom\s*\]/gi, '').trim();
-  const prefix = /^\s*(res|re|enc|fw|fwd|encaminhado|release)\s*:\s*/i;
+  const prefix =
+    /^\s*(res|re|enc|fw|fwd|encaminhado|release|press[- ]release|sugest[ãa]o de pauta|pauta|nota de imprensa|nota [àa] imprensa)\s*[:\-–—|]\s*/i;
   while (prefix.test(s)) s = s.replace(prefix, '');
   return s.trim();
 }
@@ -68,7 +73,11 @@ export function cleanEmailBody(bodyText: string, title?: string): string {
     /^\s*atenciosamente[;,.:]?\s*$/im,
     /^\s*cr[eé]ditos?:/im,
     /^\s*fotos?\s*\/?\s*texto:/im,
+    /^\s*texto:\s*secom/im,
     /^\s*legenda:/im,
+    /^\s*\*?\s*imprensa:\s*prefeitura/im,
+    /^\s*secretaria( municipal)? de comunica[çc][ãa]o( social)?\s*[-–—(]/im,
+    /^\s*outras informa[çc][õo]es:\s*\S+@/im,
     /a informa[çc][ãa]o contida nesta mensagem/i,
   ];
   let cut = text.length;
@@ -82,13 +91,19 @@ export function cleanEmailBody(bodyText: string, title?: string): string {
   // placeholders de imagem inline do Gmail não são conteúdo
   text = text.replace(/\[image:[^\]]*\]/gi, '').trim();
 
-  if (title) {
-    const paras = text.split(/\n\s*\n/);
-    if (paras.length > 1 && normalize(paras[0].replace(/\n/g, ' ')) === normalize(title)) {
-      text = paras.slice(1).join('\n\n').trim();
-    }
+  // Cabeçalho de assessoria no topo do corpo ("SUGESTÃO DE PAUTA",
+  // "PREFEITURA DE SANTANA DE PARNAÍBA", "RELEASE", "NOTA DE ADIAMENTO"):
+  // linhas curtas e institucionais, não são texto da matéria.
+  const header =
+    /^(sugest[ãa]o de pauta|press[- ]release|release|nota( de [a-zà-ÿ]+)?|comunicado|prefeitura( municipal)? de [a-zà-ÿ ]+|secom|secretaria( municipal)? de comunica[çc][ãa]o( social)?)\s*[:!.]?$/i;
+  let paras = text.split(/\n\s*\n/);
+  while (paras.length > 1 && header.test(paras[0].replace(/\n/g, ' ').trim())) paras = paras.slice(1);
+  // O título repetido logo abaixo do cabeçalho também sai.
+  if (title && paras.length > 1 && normalize(paras[0].replace(/\n/g, ' ')) === normalize(title)) {
+    paras = paras.slice(1);
   }
-  return text;
+  const rebuilt = paras.join('\n\n').trim();
+  return rebuilt || text;
 }
 
 /**
@@ -108,9 +123,14 @@ export function readTimeMin(text: string): number {
   return Math.max(1, Math.ceil(words / 200));
 }
 
-/** Resumo: primeiras 2–3 frases do corpo. */
+/**
+ * Resumo: primeiras 2–3 frases do corpo. Fim de parágrafo conta como fim
+ * de frase — linha-fina sem ponto final não pode emendar na frase seguinte.
+ */
 export function excerptFrom(body: string, maxChars = 220): string {
-  const clean = body.replace(/\s+/g, ' ').trim();
+  const clean = bodyParagraphs(body)
+    .map((p) => (/[.!?…]["»)]?$/.test(p) ? p : `${p}.`))
+    .join(' ');
   const sentences = clean.match(/[^.!?]+[.!?]+/g) || [clean];
   let out = '';
   for (const s of sentences) {

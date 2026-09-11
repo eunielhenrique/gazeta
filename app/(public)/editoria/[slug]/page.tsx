@@ -52,7 +52,7 @@ export default async function EditoriaPage({ params }: { params: Promise<{ slug:
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             {items.map((a) => (
-              <PostCard key={a.id} article={a} brand={brand} />
+              <PostCard key={a.id} article={a} />
             ))}
           </div>
         )}

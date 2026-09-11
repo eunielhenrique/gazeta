@@ -5,8 +5,7 @@ import Link from 'next/link';
 import type { HeroSlide } from '@/lib/types';
 import type { PostDTO } from '@/lib/types';
 import type { Brand } from '@/lib/brand';
-import { authorLabel } from '@/lib/format';
-import { Avatar, CatBadge } from './primitives';
+import { CatBadge } from './primitives';
 
 /** Troca de slide a cada 8s — tempo pra ler o título antes de revezar. */
 const INTERVALO_MS = 8000;
@@ -46,7 +45,7 @@ function SecondaryCard({ a, brand, delayMs = 0 }: { a: PostDTO; brand: Brand; de
         </div>
         <h3 className="gz-d-sec" style={{ fontSize: 24, fontWeight: 600, lineHeight: '31.2px', letterSpacing: '-0.4px', color: '#fff', textWrap: 'balance' }}>{a.title}</h3>
         <div style={{ fontSize: 14, color: 'rgba(255,255,255,.64)' }}>
-          {authorLabel(a.author, brand.shortName).split(' ')[0]} · {a.date} · {a.read_time_min} min
+          {a.date} · {a.read_time_min} min
         </div>
       </div>
     </Link>
@@ -110,14 +109,8 @@ export default function Hero({ slides, brand }: { slides: HeroSlide[]; brand: Br
               </div>
               <h2 className="gz-d-hero" style={{ fontSize: 44.8, fontWeight: 600, lineHeight: '46.6px', letterSpacing: '-0.8px', color: '#fff', textWrap: 'balance', maxWidth: 600, textShadow: '0 1px 4px rgba(0,0,0,.5)' }}>{hero.title}</h2>
               <p style={{ fontSize: 16, fontWeight: 500, lineHeight: '25.6px', letterSpacing: '-0.16px', color: 'rgba(255,255,255,.94)', maxWidth: 540, textShadow: '0 1px 3px rgba(0,0,0,.55)' }}>{hero.excerpt}</p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 2 }}>
-                <Avatar name={authorLabel(hero.author, brand.shortName)} size={40} />
-                <div>
-                  <div style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>{authorLabel(hero.author, brand.shortName)}</div>
-                  <div style={{ fontSize: 14, fontWeight: 400, color: 'rgba(255,255,255,.62)' }}>
-                    {hero.date} · {hero.read_time_min} min de leitura
-                  </div>
-                </div>
+              <div style={{ fontSize: 14, fontWeight: 400, color: 'rgba(255,255,255,.62)', marginTop: 2 }}>
+                {hero.date} · {hero.read_time_min} min de leitura
               </div>
             </div>
           </Link>
