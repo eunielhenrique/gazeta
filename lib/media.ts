@@ -1,5 +1,11 @@
 import sharp from 'sharp';
 
+// Instância de produção tem 512 MB: sem cache do libvips, uma imagem por vez
+// e leitura sequencial, para uma foto de câmera de 24 MP não derrubar o processo.
+sharp.cache(false);
+sharp.concurrency(1);
+const MAX_INPUT_PIXELS = 50e6;
+
 export const MAX_INLINE_BYTES = 25 * 1024 * 1024; // por anexo, após decode (foto de câmera passa de 7 MB)
 export const MAX_STORED_BYTES = 8 * 1024 * 1024; // teto do que vai pro banco sem conseguir redimensionar
 const RESIZE_ABOVE_BYTES = 600 * 1024; // acima disso, reencoda para web
@@ -9,7 +15,7 @@ const MAX_WIDTH = 1920;
 export async function toWebImage(bytes: Buffer, mime: string): Promise<{ bytes: Buffer; mime: string }> {
   if (bytes.length <= RESIZE_ABOVE_BYTES) return { bytes, mime };
   try {
-    const out = await sharp(bytes, { failOn: 'none' })
+    const out = await sharp(bytes, { failOn: 'none', limitInputPixels: MAX_INPUT_PIXELS, sequentialRead: true })
       .rotate()
       .resize({ width: MAX_WIDTH, withoutEnlargement: true })
       .jpeg({ quality: 82, mozjpeg: true })
@@ -29,6 +35,8 @@ export async function decodeInlineImage(
   mime: string | undefined,
 ): Promise<{ bytes: Buffer; mime: string } | null> {
   if (!mime?.startsWith('image/')) return null;
+  // base64 é ~4/3 do binário: recusa antes de alocar o que não caberia mesmo.
+  if (contentBase64.length > (MAX_INLINE_BYTES * 4) / 3) return null;
   let bytes: Buffer;
   try {
     bytes = Buffer.from(contentBase64, 'base64');
