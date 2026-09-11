@@ -44,3 +44,13 @@ test('excerptFrom não emenda linha-fina sem ponto na frase seguinte', () => {
   const ex = excerptFrom(body, 120);
   assert.ok(ex.startsWith('Nova etapa do programa acontece neste sábado. Mais de 2,8 mil'), ex);
 });
+
+test('cleanEmailBody: cabeçalho em linhas coladas (formato Marcha) e frase que começa com Prefeitura', () => {
+  const title = 'Marcha para Jesus reúne fé em Santana de Parnaíba';
+  const raw = 'SUGESTÃO DE PAUTA\nPREFEITURA DE SANTANA DE PARNAÍBA\n\nMarcha para Jesus reúne fé em\nSantana de Parnaíba\n\nRenascer Praise está entre as atrações\n\nSantana de Parnaíba será palco da Marcha.';
+  const out = cleanEmailBody(raw, title);
+  assert.ok(out.startsWith('Renascer Praise'), out);
+  // frase normal começando com "Prefeitura de ..." não é cabeçalho
+  const frase = 'Prefeitura de Santana de Parnaíba inaugura novo espaço para os idosos da cidade\n\nSegundo parágrafo.';
+  assert.equal(cleanEmailBody(frase), frase);
+});

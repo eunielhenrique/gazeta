@@ -94,10 +94,17 @@ export function cleanEmailBody(bodyText: string, title?: string): string {
   // Cabeçalho de assessoria no topo do corpo ("SUGESTÃO DE PAUTA",
   // "PREFEITURA DE SANTANA DE PARNAÍBA", "RELEASE", "NOTA DE ADIAMENTO"):
   // linhas curtas e institucionais, não são texto da matéria.
+  // Vem em parágrafos separados OU em linhas coladas ("SUGESTÃO DE PAUTA\n
+  // PREFEITURA DE ...\n\ntítulo"), então descarta linha a linha. Só linhas
+  // curtas contam: "Prefeitura de X inaugura novo espaço..." é frase, fica.
   const header =
     /^(sugest[ãa]o de pauta|press[- ]release|release|nota( de [a-zà-ÿ]+)?|comunicado|prefeitura( municipal)? de [a-zà-ÿ ]+|secom|secretaria( municipal)? de comunica[çc][ãa]o( social)?)\s*[:!.]?$/i;
+  const isHeaderLine = (line: string) => header.test(line) && line.split(/\s+/).length <= 6;
+  const lines = text.split('\n');
+  let skip = 0;
+  while (skip < lines.length && (lines[skip].trim() === '' || isHeaderLine(lines[skip].trim()))) skip++;
+  if (skip > 0 && skip < lines.length) text = lines.slice(skip).join('\n').trim();
   let paras = text.split(/\n\s*\n/);
-  while (paras.length > 1 && header.test(paras[0].replace(/\n/g, ' ').trim())) paras = paras.slice(1);
   // O título repetido logo abaixo do cabeçalho também sai.
   if (title && paras.length > 1 && normalize(paras[0].replace(/\n/g, ' ')) === normalize(title)) {
     paras = paras.slice(1);
