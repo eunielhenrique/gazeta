@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { decodeInlineImage } from '@/lib/media';
+import { isPlaceholderCover } from '@/lib/cover';
 import type { Attachment } from '@/lib/ingest-types';
 
 const SITE_URL = process.env.SITE_URL ?? 'https://gazetadealphaville.com.br';
@@ -42,11 +43,23 @@ export async function POST(req: Request) {
   const email = await prisma.ingestEmail.findUnique({ where: { messageId }, include: { post: true } });
   if (!email) return NextResponse.json({ error: 'unknown_message' }, { status: 404 });
 
-  // Mesma foto reenviada (retentativa do encaminhador) não duplica.
+  // Post criado antes do fallback por editoria guarda a URL do placeholder
+  // preto como capa: para o efeito de "já tem foto?", isso é NÃO ter capa.
+  const post = email.post;
+  const needsCover = !!post && isPlaceholderCover(post.coverImageUrl);
+  const setCover = async (url: string) => {
+    if (!post || !needsCover) return post?.coverImageUrl ?? null;
+    await prisma.post.update({ where: { id: post.id }, data: { coverImageUrl: url } });
+    return url;
+  };
+
+  // Mesma foto reenviada (retentativa do encaminhador) não duplica — mas
+  // ainda vira capa se o post ficou sem (caso da primeira tentativa falha).
   const known = (email.attachments as Attachment[] | null) ?? [];
   const already = filename && known.find((a) => a.filename === filename && a.url);
-  if (already) {
-    return NextResponse.json({ status: 'duplicate', url: already.url, coverImageUrl: email.post?.coverImageUrl ?? null });
+  if (already && already.url) {
+    const coverImageUrl = await setCover(already.url);
+    return NextResponse.json({ status: 'duplicate', url: already.url, coverImageUrl });
   }
 
   const web = await decodeInlineImage(contentBase64, mime);
@@ -59,10 +72,6 @@ export async function POST(req: Request) {
   const attachment: Attachment = { filename: filename ?? undefined, mime: web.mime, bytes: web.bytes.length, url };
   await prisma.ingestEmail.update({ where: { id: email.id }, data: { attachments: [...known, attachment] as object[] } });
 
-  let coverImageUrl = email.post?.coverImageUrl ?? null;
-  if (email.post && !email.post.coverImageUrl) {
-    await prisma.post.update({ where: { id: email.post.id }, data: { coverImageUrl: url } });
-    coverImageUrl = url;
-  }
-  return NextResponse.json({ status: 'stored', url, coverImageUrl, postSlug: email.post?.slug ?? null }, { status: 201 });
+  const coverImageUrl = await setCover(url);
+  return NextResponse.json({ status: 'stored', url, coverImageUrl, postSlug: post?.slug ?? null }, { status: 201 });
 }
