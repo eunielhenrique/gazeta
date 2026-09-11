@@ -120,9 +120,9 @@ export async function ingestEmail(raw: RawEmail): Promise<IngestOutcome> {
   }
 
   const slug = await uniqueSlug(slugify(title));
-  const cover =
-    raw.attachments?.find((a) => a.mime?.startsWith('image/'))?.url ??
-    `${process.env.SITE_URL ?? 'https://gazetadealphaville.com.br'}/capa-padrao.svg`;
+  // Sem foto anexa (nota, comunicado) fica null: a capa de fallback por
+  // editoria é resolvida na leitura (lib/cover.ts), na marca de cada domínio.
+  const cover = raw.attachments?.find((a) => a.mime?.startsWith('image/'))?.url ?? null;
   const willPublish = decision.action === 'publish';
 
   const post = await prisma.post.create({

@@ -1,6 +1,7 @@
 import type { Post } from '@prisma/client';
 import { editoriaBySlug, regiaoNome } from './taxonomy';
 import { formatDate } from './format';
+import { resolveCoverUrl } from './cover';
 import type { PostDTO } from './types';
 
 export function toPostDTO(post: Post): PostDTO {
@@ -18,7 +19,7 @@ export function toPostDTO(post: Post): PostDTO {
       texto_sobre_cor: ed?.texto_sobre_cor ?? '#ffffff',
     },
     regiao: { slug: post.regiaoSlug, nome: regiaoNome(post.regiaoSlug) },
-    cover_image_url: post.coverImageUrl,
+    cover_image_url: resolveCoverUrl(post.coverImageUrl, post.editoriaSlug),
     author: post.author,
     source: post.source,
     read_time_min: post.readTimeMin,
