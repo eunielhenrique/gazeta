@@ -9,11 +9,9 @@
   @font-face { font-family: "Nunito Sans"; src: url(fontes/nunito-sans.woff2) format("woff2"); font-weight: 200 1000; }
 
   :root {
-    /* Cores tiradas do logo */
-    --azul: #2a8aa0;
-    --azul-escuro: #2c4e74;
-    --azul-claro: #dcf0f4;
-    --turquesa: #55b6c7;
+    --azul: #1f5fae;
+    --azul-escuro: #173a6b;
+    --azul-claro: #dcebfa;
     --papel: #fdfcf9;
     --texto: #33415c;
     --suave: #8a97ad;
@@ -45,16 +43,23 @@
     position: absolute;
     inset: 0 0 auto 0;
     height: 3mm;
-    background: linear-gradient(90deg, var(--azul-escuro), var(--turquesa));
+    background: var(--azul);
   }
 
   .topo {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
-    margin-bottom: 12mm;
+    margin-bottom: 14mm;
   }
-  .logo { height: 17mm; display: block; }
+  .marca {
+    font-weight: 800;
+    font-style: italic;
+    font-size: 15pt;
+    letter-spacing: 0.02em;
+    color: var(--azul);
+  }
+  .marca span { color: var(--azul-escuro); }
   .tagline {
     font-size: 6.5pt;
     font-weight: 600;
@@ -84,7 +89,7 @@
     line-height: 1.7;
     margin-bottom: 4.5mm;
   }
-  .corpo strong { color: var(--azul-escuro); font-weight: 800; }
+  .corpo strong { color: var(--azul); font-weight: 800; }
 
   .corpo .destaque {
     font-family: "Caveat", cursive;
@@ -141,7 +146,7 @@
 <body>
   <main class="carta">
     <header class="topo">
-      <img class="logo" src="imagens/logo-clean-tech.png" alt="Clean Tech">
+      <div class="marca">CLEAN <span>TECH</span></div>
       <div class="tagline">Praticidade · Qualidade</div>
     </header>
 
