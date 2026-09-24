@@ -4,9 +4,11 @@
 <meta charset="utf-8">
 <title>Carta Clean Tech</title>
 <style>
-  /* Fontes locais (Caveat e Nunito Sans, Google Fonts, licença OFL) */
-  @font-face { font-family: "Caveat"; src: url(fontes/caveat.woff2) format("woff2"); font-weight: 400 700; }
-  @font-face { font-family: "Nunito Sans"; src: url(fontes/nunito-sans.woff2) format("woff2"); font-weight: 200 1000; }
+  /* Fontes locais: Liberation Serif (títulos, OFL) e DejaVu Sans (texto, licença livre) */
+  @font-face { font-family: "Titulo"; src: url(fontes/LiberationSerif-Regular.ttf); font-weight: 400; }
+  @font-face { font-family: "Titulo"; src: url(fontes/LiberationSerif-Bold.ttf); font-weight: 700; }
+  @font-face { font-family: "Texto"; src: url(fontes/DejaVuSans.ttf); font-weight: 400; }
+  @font-face { font-family: "Texto"; src: url(fontes/DejaVuSans-Bold.ttf); font-weight: 700; }
 
   :root {
     --azul: #1f5fae;
@@ -20,7 +22,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: #eef2f7; }
   body {
-    font-family: "Nunito Sans", system-ui, sans-serif;
+    font-family: "Texto", sans-serif;
     color: var(--texto);
     -webkit-font-smoothing: antialiased;
   }
@@ -48,18 +50,11 @@
 
   .topo {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
-    margin-bottom: 14mm;
+    margin-bottom: 12mm;
   }
-  .marca {
-    font-weight: 800;
-    font-style: italic;
-    font-size: 15pt;
-    letter-spacing: 0.02em;
-    color: var(--azul);
-  }
-  .marca span { color: var(--azul-escuro); }
+  .logo { height: 17mm; display: block; }
   .tagline {
     font-size: 6.5pt;
     font-weight: 600;
@@ -69,14 +64,14 @@
   }
 
   .saudacao {
-    font-family: "Caveat", cursive;
+    font-family: "Titulo", serif;
     font-weight: 600;
     font-size: 34pt;
     line-height: 1;
     color: var(--azul-escuro);
   }
   .subtitulo {
-    font-family: "Caveat", cursive;
+    font-family: "Titulo", serif;
     font-weight: 500;
     font-size: 19pt;
     color: var(--azul);
@@ -92,9 +87,9 @@
   .corpo strong { color: var(--azul); font-weight: 800; }
 
   .corpo .destaque {
-    font-family: "Caveat", cursive;
-    font-size: 22pt;
-    font-weight: 600;
+    font-family: "Titulo", serif;
+    font-size: 11pt;
+    font-weight: 700;
     color: var(--azul-escuro);
     background: linear-gradient(transparent 55%, var(--azul-claro) 55%);
     display: inline;
@@ -111,14 +106,14 @@
     color: var(--suave);
   }
   .assinatura .nome {
-    font-family: "Caveat", cursive;
+    font-family: "Titulo", serif;
     font-size: 24pt;
     font-weight: 600;
     color: var(--azul);
     line-height: 1.1;
   }
   .assinatura .lema {
-    font-family: "Caveat", cursive;
+    font-family: "Titulo", serif;
     font-size: 13pt;
     color: var(--texto);
     margin-top: 1mm;
@@ -146,7 +141,7 @@
 <body>
   <main class="carta">
     <header class="topo">
-      <div class="marca">CLEAN <span>TECH</span></div>
+      <img class="logo" src="imagens/logo-clean-tech.png" alt="Clean Tech">
       <div class="tagline">Praticidade · Qualidade</div>
     </header>
 
